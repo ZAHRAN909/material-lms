@@ -40,7 +40,7 @@ interface CreateCourseFormProps {
     subCategories: { label: string; value: string }[];
   }[];
 }
-
+const hasCacheData=true
 const CreateCourseForm = ({ categories }: CreateCourseFormProps) => {
   const router = useRouter();
 
@@ -91,6 +91,7 @@ const CreateCourseForm = ({ categories }: CreateCourseFormProps) => {
                 <FormLabel>Title</FormLabel>
                 <FormControl>
                   <Input
+                  
                     placeholder="Ex: Web Development for Beginners"
                     {...field}
                   />

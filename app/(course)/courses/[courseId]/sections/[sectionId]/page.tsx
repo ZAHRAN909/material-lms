@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 
 
 
+
 const SectionDetailsPage = async ({
   params,
 }: {
@@ -87,6 +88,7 @@ const SectionDetailsPage = async ({
 
   return (
     <SectionsDetails
+    path=""
       course={course}
       section={section}
       purchase={purchase}

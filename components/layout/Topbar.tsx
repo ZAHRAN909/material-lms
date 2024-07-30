@@ -17,12 +17,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
- interface TopbarProps {
-
-     isAdmin: boolean
-
- }
-const Topbar: React.FC<TopbarProps> = ({isAdmin}) => {
+interface TopbarProps {
+  isAdmin: boolean;
+}
+const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
   const { isSignedIn } = useAuth();
   const router = useRouter();
   const pathName = usePathname();
@@ -51,9 +49,7 @@ const Topbar: React.FC<TopbarProps> = ({isAdmin}) => {
 
   return (
     <div className="flex justify-between items-center p-4">
-    
       <Link className="flex justify-center items-center" href="/">
-     
         <Image src="/logo.png" height={80} width={100} alt="logo" />
       </Link>
 
@@ -75,7 +71,7 @@ const Topbar: React.FC<TopbarProps> = ({isAdmin}) => {
 
       <div className="flex gap-6 items-center">
         <div className="max-sm:hidden flex gap-6">
-          {isAdmin &&
+          {isAdmin && (
             <Link
               href="/instructor/courses"
               key="/instructor/courses"
@@ -83,15 +79,14 @@ const Topbar: React.FC<TopbarProps> = ({isAdmin}) => {
             >
               Instructor
             </Link>
-          }
-           <Link
-              href="/learning"
-              key="/learning"
-              className="text-sm font-medium hover:text-[#003285]"
-            >
-              My Courses
-            </Link>
-
+          )}
+          <Link
+            href="/learning"
+            key="/learning"
+            className="text-sm font-medium hover:text-[#003285]"
+          >
+            My Courses
+          </Link>
         </div>
 
         <div className="z-20 sm:hidden">
@@ -101,16 +96,24 @@ const Topbar: React.FC<TopbarProps> = ({isAdmin}) => {
             </SheetTrigger>
             <SheetContent className="flex flex-col gap-4">
               <div className="flex flex-col gap-4">
-
-              {<Link
+                {isAdmin && (
+                  <Link
                     href="/instructor/courses"
                     key="/instructor/courses"
                     className="text-sm font-medium hover:text-[#003285]"
                   >
                     Instructor
-                  </Link>}
+                  </Link>
+                )}
+                <Link
+                  href="/learning"
+                  key="/learning"
+                  className="text-sm font-medium hover:text-[#003285]"
+                >
+                  My Courses
+                </Link>
               </div>
-              
+
               {pathName.startsWith("/instructor") && (
                 <div className="flex flex-col gap-4">
                   {sidebarRoutes.map((route) => (

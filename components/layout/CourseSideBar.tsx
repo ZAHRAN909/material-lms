@@ -47,8 +47,8 @@ const CourseSideBar = async ({ course, studentId }: CourseSideBarProps) => {
       <h1 className="text-lg font-bold text-center mb-4">{course.title}</h1>
       {purchase && (
         <div>
-          <Progress value={progressPercentage} className="h-2" />
           <p className="text-xs">{Math.round(progressPercentage)}% completed</p>
+          <Progress value={progressPercentage} className="h-3 mt-2" />
         </div>
       )}
       <Link
@@ -58,6 +58,7 @@ const CourseSideBar = async ({ course, studentId }: CourseSideBarProps) => {
         Overview
       </Link>
       {publishedSections.map((section) => (
+        <>
         <Link
           key={section.id}
           href={`/courses/${course.id}/sections/${section.id}`}
@@ -65,6 +66,9 @@ const CourseSideBar = async ({ course, studentId }: CourseSideBarProps) => {
         >
           {section.title}
         </Link>
+        
+        </>
+        
       ))}
     </div>
   );

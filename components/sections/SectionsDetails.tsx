@@ -22,6 +22,9 @@ import SectionMenu from "../layout/SectionMenu";
 import { buyCourse } from "@/app/actions";
 import { auth } from "@clerk/nextjs/server"
 import { db } from "@/lib/db";
+import { useRouter } from "next/router";
+import { revalidatePath } from "next/cache";
+import { usePathname, useSearchParams } from 'next/navigation'
 
 
 const buy= buyCourse
@@ -33,6 +36,7 @@ interface SectionsDetailsProps {
   resources: Resource[] | [];
   progress: Progress | null;
   userId:string 
+  path:string
 }
 
 const SectionsDetails =  ({
@@ -43,12 +47,14 @@ const SectionsDetails =  ({
   resources,
   progress,
   userId,
+  path
 }: SectionsDetailsProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const isLocked = !purchase && !section.isFree;
 
+
 const isPurchased= purchase?.customerId ==userId 
- 
+
   console.log(isPurchased);
 
   ;
@@ -64,7 +70,11 @@ const isPurchased= purchase?.customerId ==userId
           {
             !isPurchased?( <div>
               <form action={buy}>
-                <button type="submit" className=" outline-none bg-slate-800 p-4 rounded-md text-white">
+                <button type="submit" className=" outline-none bg-slate-800 p-4 rounded-md text-white"
+                onClick={()=>{
+                  revalidatePath(`${usePathname}${useSearchParams}`)
+                }}
+                >
                   Enroll Course
                 </button>
                 <input type="text" name="customerId" value={userId} hidden />
