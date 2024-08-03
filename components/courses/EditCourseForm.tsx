@@ -251,7 +251,7 @@ const EditCourseForm = ({
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel>
-                  Couse Banner <span className="text-red-500">*</span>
+                  Course Banner <span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <FileUpload

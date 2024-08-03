@@ -49,11 +49,11 @@ const SectionDetailsPage = async ({
 
   return (
     <div className="px-10">
-      <AlertBanner
+    {/*   <AlertBanner
         isCompleted={isCompleted}
         requiredFieldsCount={requiredFieldsCount}
         missingFieldsCount={missingFieldsCount}
-      />
+      /> */}
       <EditSectionForm
         section={section}
         courseId={params.courseId}

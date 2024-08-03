@@ -21,7 +21,7 @@ export default async function Home() {
   return (
     <div className="md:mt-5 md:px-10 xl:px-16 pb-16">
       <Categories categories={categories} selectedCategory={null} />
-      <div className="flex flex-wrap gap-7 justify-center">
+      <div className="flex flex-wrap gap-7 items-center m-auto justify-center ">
         {courses.map((course) => (
           <CourseCard key={course.id} course={course} />
         ))}

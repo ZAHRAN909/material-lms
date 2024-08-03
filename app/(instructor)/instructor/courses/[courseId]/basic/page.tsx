@@ -53,11 +53,11 @@ const CourseBasics = async ({ params }: { params: { courseId: string } }) => {
 
   return (
     <div className="px-10">
-      <AlertBanner
+     {/*  <AlertBanner
         isCompleted={isCompleted}
         missingFieldsCount={missingFieldsCount}
         requiredFieldsCount={requiredFieldsCount}
-      />
+      /> */}
       <EditCourseForm
         course={course}
         categories={categories.map((category) => ({

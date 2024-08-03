@@ -10,3 +10,21 @@ export const Admins = async()=>{
  return admins
 
 }
+
+type ResourceState = "Course Enrolled Successfully" | "Error enrolling Course" | null;
+export const enrollCourse = async (state:ResourceState ,formData: FormData):Promise<ResourceState> => {
+    try{
+        await new Promise((resolve) => setTimeout(resolve, 2000)); 
+        await db.purchase.create({
+            data:{
+                customerId: formData.get('customerId') as string,
+                courseId: formData.get('courseId') as string
+            }
+        })
+        
+        return "Course Enrolled Successfully";
+    }catch(e){
+        return "Error enrolling Course";
+    }
+  
+}
