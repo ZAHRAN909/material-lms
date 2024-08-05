@@ -9,6 +9,7 @@ const InstructorLayout = async ({ children }: { children: React.ReactNode }) => 
   const { userId } = auth()
   const admins = await Admins()
   const isAdmin = admins.some(admin => admin.id === userId || admin.ID === userId);
+  
   if (!userId) {
     return redirect("/sign-in")
   }
@@ -18,8 +19,22 @@ const InstructorLayout = async ({ children }: { children: React.ReactNode }) => 
       <Topbar isAdmin={isAdmin} />
       <div className="flex-1 flex">
         <Sidebar />
+        { isAdmin &&
         <div className="flex-1">{children}</div>
-      </div>
+      
+          }  </div>
+          {
+            !isAdmin && <div className=" flex-1 justify-start h-4">
+              <div className= " p-6 flex items-center justify-start flex-col">
+                <h2 className="text-xl font-bold text-gray-800 mb-4">
+                  Hello Student
+                </h2>
+                <h4 className="text-lg font-bold text-gray-600">
+                  You Are Not <span className="text-red-600 font-bold">AUTHORIZED</span>
+                </h4>
+              </div>
+            </div>
+          }
     </div>
   );
 };

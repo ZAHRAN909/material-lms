@@ -21,17 +21,17 @@ const CourseCard = async ({ course }: { course: Course }) => {
   return (
     <Link
       href={`/courses/${course.id}/overview`}
-      className="border rounded-lg cursor-pointer"
+      className="border rounded-lg shadow-sm  cursor-pointer overflow-hidden group hover:translate-y-3 hover:shadow-md transition-all ease-in-out duration-300 delay-75"
     >
       <Image
         src={course.imageUrl ? course.imageUrl : "/image_placeholder.webp"}
         alt={course.title}
         width={500}
         height={300}
-        className="rounded-t-xl w-[320px] h-[180px] object-cover"
+        className="rounded-t-xl w-[320px] h-[180px] object-cover transition-transform duration-500 ease-in-out transform group-hover:scale-110 group-hover:skew-y-2 "
       />
       <div className="px-4 py-3 flex flex-col gap-2">
-        <h2 className="text-lg font-bold hover:[#003285]">{course.title}</h2>
+        <h2 className="text-lg font-bold group-hover:text-blue-700 transition-colors duration-100 ease-in-out">{course.title}</h2>
         <div className="flex justify-between text-sm font-medium">
           {instructor && (
             <div className="flex gap-2 items-center">

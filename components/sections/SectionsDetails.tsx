@@ -20,14 +20,14 @@ import Link from "next/link";
 import ProgressButton from "./ProgressButton";
 import SectionMenu from "../layout/SectionMenu";
 import { buyCourse } from "@/app/actions";
-import { auth } from "@clerk/nextjs/server"
+import { auth } from "@clerk/nextjs/server";
 import { db } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams } from "next/navigation";
+import Spinner from "./Spinner";
 
-
-const buy= buyCourse
+const buy = buyCourse;
 interface SectionsDetailsProps {
   course: Course & { sections: Section[] };
   section: Section;
@@ -35,11 +35,11 @@ interface SectionsDetailsProps {
   muxData: MuxData | null;
   resources: Resource[] | [];
   progress: Progress | null;
-  userId:string 
-  path:string
+  userId: string;
+  path: string;
 }
 
-const SectionsDetails =  ({
+const SectionsDetails = ({
   course,
   section,
   purchase,
@@ -47,52 +47,57 @@ const SectionsDetails =  ({
   resources,
   progress,
   userId,
-  path
+  path,
 }: SectionsDetailsProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const isLocked = !purchase && !section.isFree;
+  
   const router = useRouter();
+  
+  
 
-const isPurchased= purchase?.customerId ==userId 
+  const isPurchased = purchase?.customerId == userId;
 
   console.log(isPurchased);
-
-  ;
 
   return (
     <div className="px-6 py-4 flex flex-col gap-5">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center">
         <h1 className="text-2xl font-bold max-md:mb-4">{section.title}</h1>
-       
 
         <div className="flex gap-4">
           <SectionMenu course={course} />
           {
-            !isPurchased?( <div>
-              <form action={buy}>
-                <button type="submit" className=" outline-none bg-slate-800 p-4 rounded-md text-white"
-                onClick={()=>{
-                  new Promise((resolve) => setTimeout(resolve, 2000));
-                  toast.success("Course Updated");
-                  
-                }}
-                >
-                 <Link
-                   href={"/learning"}             
-          >
-            Enroll Course
-          </Link>
-                </button>
-                <input type="text" name="customerId" value={userId} hidden />
-                <input type="text" name="courseId" value={course.id} hidden />
-              </form>
-    
-            </div>):(
-            <ProgressButton
-              courseId={course.id}
-              sectionId={section.id}
-              isCompleted={!!progress?.isCompleted}
-            />) // !! converts falsy values to boolean false
+            !isPurchased ? (
+              <div>
+                <form action={buy}>
+                  <button
+                    type="submit"
+                    className="outline-none bg-slate-800 p-4 rounded-md text-white"
+                    onClick={() => {
+                      setIsLoading(true);
+                      new Promise((resolve) => setTimeout(resolve, 2000)).then(
+                        () => {
+                          toast.success("Course Enrolled!");
+                          router.refresh();
+                          setIsLoading(false);
+                        }
+                      );
+                    }}
+                  >
+                    {isLoading ? <>Enrolling.. <Spinner/></> : "Enroll Course"}
+                  </button>
+                  <input type="text" name="customerId" value={userId} hidden />
+                  <input type="text" name="courseId" value={course.id} hidden />
+                </form>
+              </div>
+            ) : (
+              <ProgressButton
+                courseId={course.id}
+                sectionId={section.id}
+                isCompleted={!!progress?.isCompleted}
+              />
+            ) // !! converts falsy values to boolean false
           }
         </div>
       </div>
