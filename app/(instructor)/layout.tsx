@@ -30,6 +30,7 @@ const InstructorLayout = async ({ children }: { children: React.ReactNode }) => 
                   Hello Student
                 </h2>
                 <h4 className="text-lg font-bold text-gray-600">
+                  
                   You Are Not <span className="text-red-600 font-bold">AUTHORIZED</span>
                 </h4>
               </div>

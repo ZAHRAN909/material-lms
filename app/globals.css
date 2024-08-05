@@ -82,14 +82,16 @@ body,
 }
 
 .cl-formButtonPrimary {
-  color: black;
-  background-color: #003285;
+  color: white;
+  background-color: #123f86;
 }
 
 .cl-formButtonPrimary:hover {
-  background-color: rgba(253, 171, 4, 0.8);
+  background-color: #003285;
 }
-
+.cl-rootBox{
+  background-color: #ffffff80 !important
+}
 @import "@uploadthing/react/styles.css";
 .hvr{
   transition: all .5s;
