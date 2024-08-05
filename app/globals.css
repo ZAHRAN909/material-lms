@@ -67,3 +67,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+.cl-formButtonPrimary{
+  background: #021F83;
+  color: #fff;
+  transition : all 0.3s ease;
+}
+ .cl-formButtonPrimary:hover{
+  background: #0d267e;
+  color: #fff;
+}
