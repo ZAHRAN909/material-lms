@@ -1,7 +1,10 @@
+
 import CourseCard from "@/components/courses/CourseCard";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+
+import Header from "./Header";
 
 const LearningPage = async () => {
   const { userId } = auth();
@@ -31,7 +34,7 @@ const LearningPage = async () => {
 
   return (
     <div className="px-4 py-6 md:mt-5 md:px-10 xl:px-16">
-      <h1 className="text-2xl font-bold">Your courses</h1>
+      <Header/>
       <div className="flex flex-wrap gap-7 mt-7">
         {purchasedCourses.length != 0 ? (
           purchasedCourses.map((purchase) => (
