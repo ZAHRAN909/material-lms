@@ -16,7 +16,7 @@ interface Engineer {
 }
 
 const engineers: Engineer[] = [
-  { name: 'Engineer A', times: [{ day: 'Monday', time: '9:00 AM - 10:00 AM', place: 'Room 101' }, { day: 'Tuesday', time: '1:00 PM - 2:00 PM', place: 'Room 102' }] },
+  { name: 'Engineer A', times: [{ day: 'Monday', time: '9:00 AM - 10:00 AM', place: 'Room 102' }, { day: 'Tuesday', time: '1:00 PM - 2:00 PM', place: 'Room 102' }] },
   { name: 'Engineer B', times: [{ day: 'Wednesday', time: '10:00 AM - 11:00 AM', place: 'Room 201' }, { day: 'Thursday', time: '2:00 PM - 3:00 PM', place: 'Room 202' }] },
   { name: 'Engineer C', times: [{ day: 'Friday', time: '11:00 AM - 12:00 PM', place: 'Room 301' }, { day: 'Saturday', time: '3:00 PM - 4:00 PM', place: 'Room 302' }] },
 ];
