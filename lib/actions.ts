@@ -11,36 +11,7 @@ export const Admins = async()=>{
 
 }
 
-// lib/addEngineer.ts
-import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
-
-interface TimeSlotInput {
-  day: string;
-  time: string;
-  place: string;
-}
-
-const addEngineer = async (name: string, timeSlots: TimeSlotInput[]) => {
-  try {
-    const newEngineer = await prisma.engineer.create({
-      data: {
-        name,
-        times: {
-          create: timeSlots,
-        },
-      },
-    });
-    console.log('Engineer added:', newEngineer);
-  } catch (error) {
-    console.error('Error adding engineer:', error);
-  } finally {
-    await prisma.$disconnect();
-  }
-};
-
-export { addEngineer };
 
 type ResourceState = "Course Enrolled Successfully" | "Error enrolling Course" | null;
 export const enrollCourse = async (state:ResourceState ,formData: FormData):Promise<ResourceState> => {
