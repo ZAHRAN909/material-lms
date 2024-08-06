@@ -69,7 +69,7 @@ export const columns: ColumnDef<Course>[] = [
     cell: ({ row }) => (
       <Link
         href={`/instructor/courses/${row.original.id}/basic`}
-        className="flex gap-2 items-center hover:text-[#003285] text-white"
+        className="flex gap-2 items-center hover:text-[#003285] text-[#003285]"
       >
         <Pencil className="h-4 w-4" /> Edit
       </Link>

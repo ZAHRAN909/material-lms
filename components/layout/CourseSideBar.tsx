@@ -69,7 +69,7 @@ const CourseSideBar = async ({ course, studentId }: CourseSideBarProps) => {
         
         </>
         
-      ))}
+))}
     </div>
   );
 };
