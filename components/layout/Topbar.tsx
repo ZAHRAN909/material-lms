@@ -1,7 +1,7 @@
 "use client";
 
 import { UserButton, useAuth } from "@clerk/nextjs";
-import { Menu, Search } from "lucide-react";
+import { Bot, BotIcon, Menu, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -81,6 +81,17 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
             </Link>
           )}
           <Link
+            href="/chat"
+            key="/chat"
+            className="text-sm font-medium hover:text-[#003285]"
+          >
+            <div className="flex   items-center justify-start ">
+              <BotIcon className="h-4 w-4" />
+              <span className="ml-2">Ai Assistant</span>
+              
+            </div>
+          </Link>
+          <Link
             href="/learning"
             key="/learning"
             className="text-sm font-medium hover:text-[#003285]"
@@ -105,12 +116,24 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
                     Instructor
                   </Link>
                 )}
+
                 <Link
                   href="/learning"
                   key="/learning"
                   className="text-sm font-medium hover:text-[#003285]"
                 >
                   My Courses
+                </Link>
+                <Link
+                  href="/chat"
+                  key="/chat"
+                  className="text-sm font-medium hover:text-[#003285]"
+                >
+                 <div className="flex ">
+                   <BotIcon className="w-5 h-5" />
+                   <span className="ml-2">Ai Assistant</span>
+ 
+                 </div>
                 </Link>
               </div>
 

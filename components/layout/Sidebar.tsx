@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart4, MonitorPlay } from "lucide-react";
+import { BarChart4, BotIcon, MonitorPlay } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -14,6 +14,12 @@ const Sidebar = () => {
       label: "Performance",
       path: "/instructor/performance",
     },
+
+    {
+      icon: <BotIcon  />,
+      label: "Ai Assistant",
+      path: "/chat",
+    }
   ];
 
   return (
