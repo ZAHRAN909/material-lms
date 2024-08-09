@@ -20,7 +20,7 @@ export async function POST(req: Request, res: Response) {
     promptWithParts = [prompt, ...imageParts];
   } else {
     // else build the multi-turn chat prompt
-    modelName = "gemini-pro";
+    modelName = "gemini-1.5-flash";
     promptWithParts = buildGoogleGenAIPrompt(messages);
   }
 
