@@ -43,7 +43,7 @@ const CourseSideBar = async ({ course, studentId }: CourseSideBarProps) => {
   const progressPercentage = (completedSections / publishedSectionIds.length) * 100;
 
   return (
-    <div className="hidden md:flex flex-col h-screen w-64 border-r shadow-md px-3 my-4 rounded-md text-sm font-medium">
+    <div className="hidden md:flex flex-col h-screen w-64 border shadow-lg p-5  my-4 rounded-md text-sm font-medium">
       <h1 className="text-lg font-bold text-center mb-4">{course.title}</h1>
       {purchase && (
         <div>

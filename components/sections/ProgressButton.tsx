@@ -30,6 +30,7 @@ const ProgressButton = ({
       });
       toast.success("Progress updated!");
       router.refresh();
+      
     } catch (err) {
       console.log("Failed to update progress", err);
       toast.error("Something went wrong!");
@@ -39,7 +40,9 @@ const ProgressButton = ({
   };
 
   return (
-    <Button variant={isCompleted ? "complete" : "default"} onClick={onClick}>
+    <Button variant={isCompleted ? "complete" : "default"} onClick={()=>{
+      onClick();
+    }}>
       {isLoading ? (
         <Loader2 className="h-4 w-4 animate-spin" />
       ) : isCompleted ? (
