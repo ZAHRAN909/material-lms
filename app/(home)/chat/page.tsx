@@ -12,7 +12,8 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen  flex-col gap-5 items-center p-12 text-lg">
-      <h2>
+    <h2 className=" font-bold text-2xl selection:bg-black selection:text-white p-5">Bot is Under Development</h2>
+      {/* <h2>
         <span className="text-3xl font-bold text-[#021F83]">Material </span>
         <span className="text-3xl text-stone-800"> Chat</span>
         <span className="text-3xl font-bold text-[#021F83]"> Bot</span>
@@ -27,7 +28,7 @@ export default function Home() {
           isLoading={isLoading}
           stop={stop}
         />
-      </div>
+      </div> */}
     </main>
   );
 }

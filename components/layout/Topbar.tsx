@@ -16,6 +16,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { ModeToggle } from "../MoodToggle";
 
 interface TopbarProps {
   isAdmin: boolean;
@@ -49,7 +50,8 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
 
   return (
     <div className="flex justify-between items-center p-4">
-      <Link className="flex justify-center items-center" href="/">
+
+      <Link className="flex justify-center items-center dark:hidden" href="/">
         <Image src="/logo.png" height={80} width={100} alt="logo" />
       </Link>
 
@@ -68,7 +70,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
           <Search className="h-4 w-4" />
         </button>
       </div>
-
+       
       <div className="flex gap-6 items-center">
         <div className="max-sm:hidden flex gap-6">
           {isAdmin && (
@@ -153,7 +155,8 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
             </SheetContent>
           </Sheet>
         </div>
-
+          
+        
         {isSignedIn ? (
           <UserButton afterSignOutUrl="/sign-in" />
         ) : (
@@ -161,6 +164,9 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
             <Button>Sign In</Button>
           </Link>
         )}
+        
+        
+        <ModeToggle />
       </div>
     </div>
   );

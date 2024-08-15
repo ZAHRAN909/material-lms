@@ -31,7 +31,7 @@ const CourseCard = async ({ course }: { course: Course }) => {
         className="rounded-t-xl w-[320px] h-[180px] object-cover transition-transform duration-500 ease-in-out transform group-hover:scale-110 group-hover:skew-y-2 "
       />
       <div className="px-4 py-3 flex flex-col gap-2">
-        <h2 className="text-lg font-bold group-hover:text-blue-700 transition-colors duration-100 ease-in-out">{course.title}</h2>
+        <h2 className="text-lg font-bold group-hover:text-blue-700 dark:group-hover:text-slate-300 transition-colors duration-100 ease-in-out">{course.title}</h2>
         <div className="flex justify-between text-sm font-medium">
           {instructor && (
             <div className="flex gap-2 items-center">
