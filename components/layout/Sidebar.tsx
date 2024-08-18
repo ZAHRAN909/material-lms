@@ -30,10 +30,12 @@ const Sidebar = () => {
           initial={{ opacity: 0, y: 20 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ delay: index * 0.3, duration: 0.5, ease: "easeOut" }}
+          key={route.path}
         >
           <motion.div
            whileHover={{ scale: 1.05, color: "#ff6347" }}
-           whileTap={{ scale: 0.95 }}>
+           whileTap={{ scale: 0.95 }}
+           key={route.path}>
             <Link
               href={route.path}
               key={route.path}
