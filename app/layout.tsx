@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-
+import { dark, neobrutalism, shadesOfPurple } from '@clerk/themes'
 import "./globals.css";
 import ToasterProvider from "@/components/providers/ToasterProvider";
 import { auth } from "@clerk/nextjs/server";
@@ -25,7 +25,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider >
+    <ClerkProvider
+    appearance={{
+      signIn: {
+        baseTheme: dark,
+      }
+    }}
+    >
       <html lang="en">
         <body className={inter.className}>
           

@@ -5,6 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import Header from "./Header";
+import { MotionDiv } from "@/components/MotionDiv";
 
 const LearningPage = async () => {
   const { userId } = auth();
@@ -37,8 +38,17 @@ const LearningPage = async () => {
       <Header/>
       <div className="flex flex-wrap gap-7 mt-7">
         {purchasedCourses.length != 0 ? (
-          purchasedCourses.map((purchase) => (
-            <CourseCard key={purchase.course.id} course={purchase.course} />
+          purchasedCourses.map((purchase,index) => (
+            <>
+            
+            
+            <div className="border rounded-lg shadow-sm  cursor-pointer overflow-hidden group hover:translate-y-3 hover:shadow-md transition-all ease-in-out duration-300 delay-75">
+
+            <CourseCard key={purchase.course.id} course={purchase.course}  />
+            </div>
+
+            
+            </>
           ))
         ) : (
           <>

@@ -1,11 +1,12 @@
 "use client";
 
 import { UserButton, useAuth } from "@clerk/nextjs";
-import { Bot, BotIcon, Menu, Search } from "lucide-react";
+import { Bot, BotIcon, Menu, MoveLeft, PersonStanding, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -38,6 +39,19 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
       path: "/instructor/performance",
     },
   ];
+  const links = [
+    {
+      href: "/chat",
+      key: "/chat",
+      icon: <BotIcon className="h-4 w-4" />,
+      label: "Ai Assistant",
+    },
+    {
+      href: "/learning",
+      key: "/learning",
+      label: "My Courses",
+    },
+  ];
 
   const [searchInput, setSearchInput] = useState("");
 
@@ -50,10 +64,16 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
 
   return (
     <div className="flex justify-between items-center p-4">
-
       <Link className="flex justify-center items-center dark:hidden" href="/">
         <Image src="/logo.png" height={80} width={100} alt="logo" />
       </Link>
+      <div
+      className="hidden dark:block"
+      onClick={() => router.back()}
+      >
+        <MoveLeft fill="" className="w-8 h-8 text-white hover:text-slate-200 translate-x-3 hover:translate-x-0 transition-all duration-100 " />
+        
+      </div>
 
       <div className="max-md:hidden w-[400px] rounded-full flex">
         <input
@@ -70,36 +90,45 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
           <Search className="h-4 w-4" />
         </button>
       </div>
-       
+
       <div className="flex gap-6 items-center">
         <div className="max-sm:hidden flex gap-6">
           {isAdmin && (
             <Link
               href="/instructor/courses"
               key="/instructor/courses"
-              className="text-sm font-medium hover:text-[#003285]"
+              className="text-sm font-medium  hover:text-[#003285]"
             >
-              Instructor
+              <PersonStanding className="w-5 h-5" />
             </Link>
           )}
-          <Link
-            href="/chat"
-            key="/chat"
-            className="text-sm font-medium hover:text-[#003285]"
-          >
-            <div className="flex   items-center justify-start ">
-              <BotIcon className="h-4 w-4" />
-              <span className="ml-2">Ai Assistant</span>
-              
-            </div>
-          </Link>
-          <Link
-            href="/learning"
-            key="/learning"
-            className="text-sm font-medium hover:text-[#003285]"
-          >
-            My Courses
-          </Link>
+          {links.map(({ href, key, icon, label }, index) => (
+            <motion.div
+              key={key}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                delay: index * 0.1,
+                duration: 0.5,
+                ease: "easeOut",
+              }}
+            >
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Link
+                  href={href}
+                  className="text-sm font-medium hover:text-[#003285]"
+                >
+                  <div className="flex items-center justify-start">
+                    {icon && icon} {/* Render icon if available */}
+                    <span className={icon ? "ml-2" : ""}>{label}</span>
+                  </div>
+                </Link>
+              </motion.div>
+            </motion.div>
+          ))}
         </div>
 
         <div className="z-20 sm:hidden">
@@ -114,9 +143,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
                     href="/instructor/courses"
                     key="/instructor/courses"
                     className="text-sm font-medium hover:text-[#003285]"
-                  >
-                    Instructor
-                  </Link>
+                  ></Link>
                 )}
 
                 <Link
@@ -131,11 +158,10 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
                   key="/chat"
                   className="text-sm font-medium hover:text-[#003285]"
                 >
-                 <div className="flex ">
-                   <BotIcon className="w-5 h-5" />
-                   <span className="ml-2">Ai Assistant</span>
- 
-                 </div>
+                  <div className="flex ">
+                    <BotIcon className="w-5 h-5" />
+                    <span className="ml-2">Ai Assistant</span>
+                  </div>
                 </Link>
               </div>
 
@@ -155,8 +181,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
             </SheetContent>
           </Sheet>
         </div>
-          
-        
+
         {isSignedIn ? (
           <UserButton afterSignOutUrl="/sign-in" />
         ) : (
@@ -164,8 +189,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
             <Button>Sign In</Button>
           </Link>
         )}
-        
-        
+
         <ModeToggle />
       </div>
     </div>

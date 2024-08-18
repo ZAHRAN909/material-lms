@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import ReadText from "@/components/custom/ReadText";
 import SectionMenu from "@/components/layout/SectionMenu";
+import { MotionDiv, MotionP } from "@/components/MotionDiv";
 
 const CourseOverview = async ({ params }: { params: { courseId: string } }) => {
   const course = await db.course.findUnique({
@@ -38,13 +39,21 @@ const CourseOverview = async ({ params }: { params: { courseId: string } }) => {
   }
 
   return (
-    <div className="px-6 py-4 flex flex-col gap-5 text-sm">
+    <MotionDiv
+    initial={{ opacity: 0, y: -100 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+     className="px-6 py-4 flex flex-col gap-5 text-sm">
       <div className="flex justify-between">
         <h1 className="text-2xl font-bold">{course.title}</h1>
         <SectionMenu course={course} />
       </div>
 
-      <p className="font-medium">{course.subtitle}</p>
+      <MotionP
+      initial={{ opacity: 0, y: -100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="font-medium">{course.subtitle}</MotionP>
 
       <div className="flex gap-2 items-center">
         <Image
@@ -76,7 +85,7 @@ const CourseOverview = async ({ params }: { params: { courseId: string } }) => {
         <p className="font-bold">Description:</p>
         <ReadText value={course.description!} />
       </div>
-    </div>
+    </MotionDiv>
   );
 };
 

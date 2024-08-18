@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { usePathname, useSearchParams } from "next/navigation";
 import Spinner from "./Spinner";
+import { MotionDiv, MotionH1 } from "../MotionDiv";
 
 const buy = buyCourse;
 interface SectionsDetailsProps {
@@ -63,7 +64,11 @@ const SectionsDetails = ({
   return (
     <div className="px-6 py-4 flex flex-col gap-5">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center">
-        <h1 className="text-2xl font-bold max-md:mb-4">{section.title}</h1>
+        <MotionH1
+        
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="text-2xl font-bold max-md:mb-4">{section.title}</MotionH1>
 
         <div className="flex gap-4">
           <SectionMenu course={course} />
@@ -118,7 +123,12 @@ const SectionsDetails = ({
         />
       )} */}
 
-      <div>
+      <MotionDiv
+      
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.5,  damping: 10, stiffness: 100, type: "spring"}}
+      >
         <h2 className="text-xl font-bold mb-5">Resources</h2>
         {resources.map((resource) => (
           <Link
@@ -131,7 +141,7 @@ const SectionsDetails = ({
             {resource.name}
           </Link>
         ))}
-      </div>
+      </MotionDiv>
     </div>
   );
 };

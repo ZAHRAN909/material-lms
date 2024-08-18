@@ -1,62 +1,61 @@
-import { StreamingTextResponse, GoogleGenerativeAIStream, Message } from "ai";
-import { GoogleGenerativeAI, Content } from "@google/generative-ai";
-// IMPORTANT! Set the runtime to edge
-export const runtime = "edge";
-export async function POST(req: Request, res: Response) {
-  const reqBody = await req.json();
-  const images: string[] = JSON.parse(reqBody.data.images);
-  const imageParts = filesArrayToGenerativeParts(images);
-  const messages: Message[] = reqBody.messages;
-  // if imageparts exist then take the last user message as prompt
-  let modelName: string;
-  let promptWithParts: any;
-  if (imageParts.length > 0) {
-    modelName = "gemini-pro-vision";
-    const prompt = 
-    [...messages]
-      .filter((message) => message.role === "user")
-      .pop()?.content;
-    console.log(prompt);
-    promptWithParts = [prompt, ...imageParts];
+import { NextApiRequest, NextApiResponse } from 'next';
+import axios from 'axios';
+
+const API_BASE_URL = 'http://localhost:8000'; // Replace with your FastAPI server URL
+
+// Handler for the root endpoint
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'GET') {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/`);
+      res.status(200).json(response.data);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch data' });
+    }
   } else {
-    // else build the multi-turn chat prompt
-    modelName = "gemini-1.5-flash";
-    promptWithParts = buildGoogleGenAIPrompt(messages);
+    res.setHeader('Allow', ['GET']);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
-
-  const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY!);
-  const model = genAI.getGenerativeModel({
-    model: modelName,
-  });
-
-  console.log("MODELNAME: " + modelName);
-  console.log("PROMPT WITH PARTS: ");
-  console.log(promptWithParts);
-  const streamingResponse = await model.generateContentStream(promptWithParts);
-  return new StreamingTextResponse(GoogleGenerativeAIStream(streamingResponse));
 }
 
-function buildGoogleGenAIPrompt(messages: Message[]) {
-  return {
-    contents: messages
-      .filter(
-        (message) => message.role === "user" || message.role === "assistant"
-      )
-      .map((message) => ({
-        role: message.role === "user" ? "user" : "model",
-        parts: [{ text: message.content }],
-      })),
-  };
+// Handler for the upload-pdf endpoint
+export async function uploadPdfHandler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'POST') {
+    const formData = new FormData();
+    formData.append('pdf', req.body.pdf);
+    formData.append('api_key', req.body.api_key);
+
+    try {
+      const response = await axios.post(`${API_BASE_URL}/upload-pdf/`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      res.status(200).json(response.data);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to upload PDF' });
+    }
+  } else {
+    res.setHeader('Allow', ['POST']);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
 }
 
-function filesArrayToGenerativeParts(images: string[]) {
-  return images.map((imageData) => ({
-    inlineData: {
-      data: imageData.split(",")[1],
-      mimeType: imageData.substring(
-        imageData.indexOf(":") + 1,
-        imageData.lastIndexOf(";")
-      ),
-    },
-  }));
+// Handler for the ask-question endpoint
+export async function askQuestionHandler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'POST') {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/ask-question/`, {
+        query: req.body.query,
+        knowledge_base: req.body.knowledge_base,
+        llm: req.body.llm,
+      });
+      res.status(200).json(response.data);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to process query' });
+    }
+  } else {
+    res.setHeader('Allow', ['POST']);
+    res.status(405).end(`Method ${req.method} Not Allowed`);
+  }
 }
