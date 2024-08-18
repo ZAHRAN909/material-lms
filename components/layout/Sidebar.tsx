@@ -24,7 +24,11 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="max-sm:hidden flex flex-col h-screen w-64 border-r shadow-md px-3 py-3 rounded-md my-4 gap-4 text-sm font-medium">
+    <motion.div
+    initial={{ opacity: 0, x: -100 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ duration: 0.8, delay: 0.5,  damping: 10, stiffness: 80, type: "spring" }}
+ className="max-sm:hidden flex flex-col h-screen w-64 border-r shadow-md px-3 py-3 rounded-md my-4 gap-4 text-sm font-medium">
       {sidebarRoutes.map((route, index) => (
         <motion.div
           initial={{ opacity: 0, y: 20 }} 
@@ -51,7 +55,7 @@ const Sidebar = () => {
           </motion.div>
         </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 };
 

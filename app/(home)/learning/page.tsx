@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 
 import Header from "./Header";
 import { MotionDiv } from "@/components/MotionDiv";
+import { delay, spring } from "framer-motion";
 
 const LearningPage = async () => {
   const { userId } = auth();
@@ -42,10 +43,17 @@ const LearningPage = async () => {
             <>
             
             
-            <div className="border rounded-lg shadow-sm  cursor-pointer overflow-hidden group hover:translate-y-3 hover:shadow-md transition-all ease-in-out duration-300 delay-75">
+            <MotionDiv
+            initial={{ opacity: 0, scale: 0.8 ,y: 100 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileInView={{ y: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut", delay: index * 0.3 }}
+            key={purchase.course.id}
+
+             className="border rounded-lg shadow-sm  cursor-pointer overflow-hidden group hover:translate-y-3 hover:shadow-md transition-all ease-in-out duration-300 delay-75">
 
             <CourseCard key={purchase.course.id} course={purchase.course}  />
-            </div>
+            </MotionDiv>
 
             
             </>

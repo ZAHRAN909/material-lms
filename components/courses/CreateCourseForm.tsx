@@ -71,7 +71,7 @@ const CreateCourseForm = ({ categories }: CreateCourseFormProps) => {
   return (
     <div className="p-10">
       <h1 className="text-xl font-bold">
-        Let give some basics for your course
+        Let give some basics for the course
       </h1>
       <p className="text-sm mt-3">
         It is ok if you cannot think of a good title or correct category now.
@@ -92,7 +92,7 @@ const CreateCourseForm = ({ categories }: CreateCourseFormProps) => {
                 <FormControl>
                   <Input
                   
-                    placeholder="Ex: Web Development for Beginners"
+                    placeholder="Course Name"
                     {...field}
                   />
                 </FormControl>

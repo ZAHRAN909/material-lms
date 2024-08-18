@@ -27,6 +27,7 @@ import { Loader2, Trash } from "lucide-react";
 import Delete from "../custom/Delete";
 import PublishButton from "../custom/PublishButton";
 import { Switch } from "../ui/switch";
+import { MotionDiv } from "../MotionDiv";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -103,13 +104,20 @@ const EditCourseForm = ({
       label: "Basic Information",
       path: `/instructor/courses/${course.id}/basic`,
     },
-    { label: "Curriculum", path: `/instructor/courses/${course.id}/sections` },
+    { label: "Weeks", path: `/instructor/courses/${course.id}/sections` },
   ];
 
   return (
     <>
       <div className="flex flex-col gap-2 sm:flex-row sm:justify-between mb-7">
-        <div className="flex gap-5">
+        <MotionDiv
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={
+            
+            { duration: 0.5, delay: 0.2 }
+                   }
+        className="flex gap-5">
           {routes.map((route) => (
             <Link key={route.path} href={route.path}>
               <Button variant={pathname === route.path ? "default" : "outline"}>
@@ -117,9 +125,15 @@ const EditCourseForm = ({
               </Button>
             </Link>
           ))}
-        </div>
+        </MotionDiv>
 
-        <div className="flex gap-5 items-start">
+        <MotionDiv 
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={
+            
+            { duration: 0.5, delay: 0.3 }
+                   } className="flex gap-5 items-start">
           <PublishButton
             disabled={!isCompleted}
             courseId={course.id}
@@ -127,8 +141,16 @@ const EditCourseForm = ({
             page="Course"
           />
           <Delete item="course" courseId={course.id} />
-        </div>
+        </MotionDiv>
       </div>
+
+      <MotionDiv
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={
+          
+          { duration: 0.5, delay: 0.6 }
+                 }>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -142,7 +164,7 @@ const EditCourseForm = ({
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Ex: Web Development for Beginners"
+                    placeholder="Course Name"
                     {...field}
                   />
                 </FormControl>
@@ -159,7 +181,7 @@ const EditCourseForm = ({
                 <FormLabel>Subtitle</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Ex: Become a Full-stack Developer with just ONE course. HTML, CSS, Javascript, Node, React, MongoDB and more!"
+                    placeholder="Ex : What will the Student Learn?"
                     {...field}
                   />
                 </FormControl>
@@ -307,7 +329,7 @@ const EditCourseForm = ({
             )}
           />
 
-          <div className="flex gap-5">
+          <div className="flex gap-5 py-4">
             <Link href="/instructor/courses">
               <Button variant="outline" type="button">
                 Cancel
@@ -323,6 +345,7 @@ const EditCourseForm = ({
           </div>
         </form>
       </Form>
+      </MotionDiv>
     </>
   );
 };
