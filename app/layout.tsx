@@ -7,6 +7,7 @@ import ToasterProvider from "@/components/providers/ToasterProvider";
 import { auth } from "@clerk/nextjs/server";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ScrollRange from "@/components/ScrollRange";
+import { SiteBlob } from "@/components/SiteBlob";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -40,8 +41,9 @@ export default function RootLayout({
             attribute="class"
             defaultTheme="system"
             enableSystem
-            disableTransitionOnChange
+            disableTransitionOnChange={true}
           >
+            <SiteBlob/>
             <ScrollRange />
           {children}
           </ThemeProvider>

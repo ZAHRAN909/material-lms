@@ -1,7 +1,8 @@
 "use client";
 
 import { UserButton, useAuth } from "@clerk/nextjs";
-import { Bot, BotIcon, Menu, MoveLeft, PersonStanding, Search } from "lucide-react";
+import { Bot, BotIcon, Menu, PersonStanding, Search } from "lucide-react";
+import HomeIcon from "@mui/icons-material/Home";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -18,6 +19,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ModeToggle } from "../MoodToggle";
+import { useTheme } from "next-themes";
 
 interface TopbarProps {
   isAdmin: boolean;
@@ -32,6 +34,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
     { label: "Learning", path: "/learning" },
   ];
 
+  const {theme} = useTheme();
   const sidebarRoutes = [
     { label: "Courses", path: "/instructor/courses" },
     {
@@ -53,6 +56,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
     },
   ];
 
+console.log(theme)
   const [searchInput, setSearchInput] = useState("");
 
   const handleSearch = () => {
@@ -64,18 +68,11 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
 
   return (
     <div className="flex justify-between items-center p-4">
-      <Link className="flex justify-center items-center dark:hidden" href="/">
-        <Image src="/logo.png" height={50} width={80} alt="logo" />
+      <Link className="flex justify-center items-center " href="/">
+        <Image src={`${theme == "dark" ?"/logoD.png":"/logo.png"}`} height={32} width={80} alt="logo" />
       </Link>
-      <div
-      className="hidden dark:block"
-      onClick={() => router.back()}
-      >
-        <MoveLeft fill="" className="w-8 h-8 text-white hover:text-slate-200 translate-x-3 hover:translate-x-0 transition-all duration-100 " />
-        
-      </div>
-
-      <div className="max-md:hidden w-[400px] rounded-full flex">
+      
+      <div className="max-md:hidden ml-56 w-[400px] rounded-full flex">
         <input
           className="flex-grow bg-[#9aabbda1] rounded-l-full border-none outline-none text-sm pl-4 py-3"
           placeholder="Search for courses"
@@ -90,7 +87,6 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
           <Search className="h-4 w-4" />
         </button>
       </div>
-
       <div className="flex gap-6 items-center">
         <div className="max-sm:hidden flex gap-6">
           {isAdmin && (
