@@ -41,7 +41,7 @@ const CreateSectionForm = ({
       label: "Basic Information",
       path: `/instructor/courses/${course.id}/basic`,
     },
-    { label: "Curriculum", path: `/instructor/courses/${course.id}/sections` },
+    { label: "Weeks", path: `/instructor/courses/${course.id}/sections` },
   ];
 
   // 1. Define your form.

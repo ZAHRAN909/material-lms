@@ -85,7 +85,7 @@ const EditSectionForm = ({
         <Link href={`/instructor/courses/${courseId}/sections`}>
           <Button variant="outline" className="text-sm font-medium">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to curriculum
+            Back to Weeks
           </Button>
         </Link>
 

@@ -31,7 +31,7 @@ const CourseCard = async ({ course }: { course: Course }) => {
       <Link href={`/courses/${course.id}/overview`} className=" relative">
         <p className=" absolute top-5  left-0 z-50 text-sm rounded-r-sm  font-semibold  rounded-l-none dark:text-[#003285] bg-[#003285] dark:border-spacing-3 dark:border-[#003285]  shadow-md px-3 py-1 text-white dark:bg-white">
           {course.subCategoryId === "0fd2caa0-ccf4-4aa3-8f80-62f927e176c4"
-            ? "Basmage"
+            ? "Basmaga"
             : "Programming"}
         </p>
         <MotionDiv>
