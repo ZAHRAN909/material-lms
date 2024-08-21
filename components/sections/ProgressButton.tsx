@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Loader2 } from "lucide-react";
+import { revalidatePath } from "next/cache";
 
 interface ProgressButtonProps {
   courseId: string;
@@ -30,6 +31,8 @@ const ProgressButton = ({
       });
       toast.success("Progress updated!");
       router.refresh();
+  // Update cache to reflect the new progress state
+  
       
     } catch (err) {
       console.log("Failed to update progress", err);

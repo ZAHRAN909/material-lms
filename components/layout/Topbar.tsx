@@ -65,7 +65,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
   return (
     <div className="flex justify-between items-center p-4">
       <Link className="flex justify-center items-center dark:hidden" href="/">
-        <Image src="/logo.png" height={80} width={100} alt="logo" />
+        <Image src="/logo.png" height={50} width={80} alt="logo" />
       </Link>
       <div
       className="hidden dark:block"

@@ -9,24 +9,22 @@ import {
   Section,
 } from "@prisma/client";
 import toast from "react-hot-toast";
-import { useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import { File, Loader2, Lock } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import ReadText from "@/components/custom/ReadText";
-import MuxPlayer from "@mux/mux-player-react";
 import Link from "next/link";
 import ProgressButton from "./ProgressButton";
 import SectionMenu from "../layout/SectionMenu";
 import { buyCourse } from "@/app/actions";
-import { auth } from "@clerk/nextjs/server";
-import { db } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { usePathname, useSearchParams } from "next/navigation";
 import Spinner from "./Spinner";
 import { MotionDiv, MotionH1 } from "../MotionDiv";
+import Confetti from "confetti-react";
+
+import useWindowSize from "react-use/lib/useWindowSize";
+
 
 const buy = buyCourse;
 interface SectionsDetailsProps {
@@ -52,7 +50,9 @@ const SectionsDetails = ({
 }: SectionsDetailsProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const isLocked = !purchase && !section.isFree;
-  
+  const [runConfetti, setRunConfetti] = useState(false);
+  const { width, height } = useWindowSize();
+
   const router = useRouter();
   
   
@@ -61,6 +61,18 @@ const SectionsDetails = ({
 
   console.log(isPurchased);
 
+  useEffect(() => {
+    const handleClick = () => {
+      // Handle the click event here
+     setRunConfetti(false)
+    };
+
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
   return (
     <div className="px-6 py-4 flex flex-col gap-5">
       <div className="flex flex-col md:flex-row md:justify-between md:items-center">
@@ -85,6 +97,12 @@ const SectionsDetails = ({
                         () => {
                           toast.success("Course Enrolled!");
                           router.refresh();
+                          setRunConfetti(true);
+                          revalidatePath(path);
+                          setTimeout(() => {
+                            setRunConfetti(false);
+                          }, 3000);
+
                           setIsLoading(false);
                         }
                       );
@@ -122,6 +140,17 @@ const SectionsDetails = ({
           className="md:max-w-[600px]"
         />
       )} */}
+      
+      {
+        runConfetti && (
+          <Confetti
+            width={width}
+            height={height}
+            run={runConfetti}
+            numberOfPieces={100}
+          />
+        )
+      }
 
       <MotionDiv
       

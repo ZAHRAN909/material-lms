@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
 import { clerkClient } from "@clerk/nextjs/server";
-import { Course } from "@prisma/client";
-import { Gem } from "lucide-react";
+import { Course, Section } from "@prisma/client";
+import { Gem, UsersRound } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { MotionDiv } from "../MotionDiv";
@@ -10,7 +10,14 @@ const CourseCard = async ({ course }: { course: Course }) => {
   const instructor = await clerkClient.users.getUser(course.instructorId);
 
   let level;
-
+  let membersCount = await db.purchase.count({
+    where: { courseId: course.id },
+  });
+  let sectionsCount = await db.section.count({
+    where: {
+      courseId: course.id,
+    },
+  });
   if (course.levelId) {
     level = await db.level.findUnique({
       where: {
@@ -21,14 +28,13 @@ const CourseCard = async ({ course }: { course: Course }) => {
 
   return (
     <>
-    
-        <Link
-          href={`/courses/${course.id}/overview`}
-          className=""
-        >
-          <MotionDiv
-           
-          >
+      <Link href={`/courses/${course.id}/overview`} className=" relative">
+        <p className=" absolute top-5  left-0 z-50 text-sm rounded-r-sm  font-semibold  rounded-l-none dark:text-[#003285] bg-[#003285] dark:border-spacing-3 dark:border-[#003285]  shadow-md px-3 py-1 text-white dark:bg-white">
+          {course.subCategoryId === "0fd2caa0-ccf4-4aa3-8f80-62f927e176c4"
+            ? "Basmage"
+            : "Programming"}
+        </p>
+        <MotionDiv>
           <Image
             src={course.imageUrl ? course.imageUrl : "/image_placeholder.webp"}
             alt={course.title}
@@ -56,35 +62,47 @@ const CourseCard = async ({ course }: { course: Course }) => {
                     }
                     width={30}
                     height={30}
-                    className="rounded-full"
+                    className="rounded-full border border-gray-300 dark:border-gray-600"
                   />
-                  <p>{instructor.fullName}</p>
+                  <div className="flex flex-col">
+                    <p>{instructor.fullName}</p>
+                    <div className="flex gap-8 justify-between">
+                      <p className="text-sm font-medium rounded text-gray-600 dark:text-gray-400">
+                        {sectionsCount}{" "}
+                        {`${sectionsCount === 1 ? "Week" : "Weeks"}`}
+                      </p>
+                      <div className="flex items-center justify-center gap-1 ">
+                        <p className="text-sm font-medium rounded text-gray-600 dark:text-gray-400">
+                          {membersCount}{" "}
+                        </p>
+                        <UsersRound width={15} height={15}  className=" text-[#003285] dark:text-white" />
+
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
               {level && (
                 <div className="flex flex-col items-center gap-1">
-                  
-                  <div className={` rounded-full w-6 h-6 flex items-center justify-center ${level.name === "3" ? "bg-blue-800":"bg-slate-400"} ${level.name==="1"?"bg-green-600":""}`}>
-
-                  <p className="font-bold text-white  ">{level.name}</p>
+                  <div
+                    className={`rounded-full w-6 h-6 flex items-center justify-center ${
+                      level.name === "3" ? "bg-blue-800" : "bg-slate-400"
+                    } ${level.name === "1" ? "bg-green-600" : ""}`}
+                  >
+                    <p className="font-bold text-white  ">{level.name}</p>
                   </div>
                 </div>
               )}
             </div>
 
-           {
-            course.price === 0 ? (
-              null
-            ) : (
+            {course.price === 0 ? null : (
               <p className="text-sm font-bold text-red-700 dark:text-red-400">
                 $ {course.price}
               </p>
-            )
-           }
+            )}
           </div>
-          </MotionDiv>
-        </Link>
-     
+        </MotionDiv>
+      </Link>
     </>
   );
 };
