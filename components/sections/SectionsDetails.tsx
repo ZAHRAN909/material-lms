@@ -24,6 +24,7 @@ import { MotionDiv, MotionH1 } from "../MotionDiv";
 import Confetti from "confetti-react";
 
 import useWindowSize from "react-use/lib/useWindowSize";
+import { Button } from "../ui/button";
 
 
 const buy = buyCourse;
@@ -88,7 +89,7 @@ const SectionsDetails = ({
             !isPurchased ? (
               <div>
                 <form action={buy}>
-                  <button
+                  <Button
                     type="submit"
                     className="outline-none bg-slate-800 p-4 rounded-md text-white"
                     onClick={() => {
@@ -109,7 +110,7 @@ const SectionsDetails = ({
                     }}
                   >
                     {isLoading ? <>Enrolling.. <Spinner/></> : "Enroll Course"}
-                  </button>
+                  </Button>
                   <input type="text" name="customerId" value={userId} hidden />
                   <input type="text" name="courseId" value={course.id} hidden />
                 </form>

@@ -165,19 +165,18 @@ model Admins {
  
 }
 model Engineer {
-  id       String        @id @default(uuid()) @map("_id")
-  name     String
-  times    TimeSlot[]
+  id     String    @id @default(auto()) @map("_id") @db.ObjectId
+  name   String
+  times  TimeSlot[]
 }
 
 model TimeSlot {
-  id          Int       @id @map("_id")
-  day         String
-  time        String
-  place       String
-  engineerId  String
-  engineer    Engineer  @relation(fields: [engineerId], references: [id])
-  @@index([engineerId])
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  day        String
+  time       String
+  place      String
+  engineer   Engineer  @relation(fields: [engineerId], references: [id])
+  engineerId String    @db.ObjectId
 }
 
 

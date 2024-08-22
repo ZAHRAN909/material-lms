@@ -72,19 +72,24 @@ const CourseOverview = async ({ params }: { params: { courseId: string } }) => {
       </div>
 
       <div className="flex gap-2">
-        <p className="font-bold">Price:</p>
-        <p>${course.price}</p>
-      </div>
-
-      <div className="flex gap-2">
         <p className="font-bold">Level:</p>
         <p>{level?.name}</p>
       </div>
 
-      <div className="flex flex-col gap-2">
-        <p className="font-bold">Description:</p>
-        <ReadText value={course.description!} />
-      </div>
+      {
+        course.description?(
+          <div className="flex flex-col gap-2">
+          <p className="font-bold">Description:</p>
+          <ReadText value={course.description!} />
+        </div>
+        ):(
+          
+          <div className="flex items-center justify-center font-bold">
+            <p>Description is not provided.</p>
+          </div>
+
+        )
+      }
     </MotionDiv>
   );
 };

@@ -18,8 +18,8 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { ModeToggle } from "../MoodToggle";
 import { useTheme } from "next-themes";
+import { ThemeToggle } from "../MoodToggle";
 
 interface TopbarProps {
   isAdmin: boolean;
@@ -34,7 +34,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
     { label: "Learning", path: "/learning" },
   ];
 
-  const {theme} = useTheme();
+  const { theme } = useTheme();
   const sidebarRoutes = [
     { label: "Courses", path: "/instructor/courses" },
     {
@@ -56,7 +56,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
     },
   ];
 
-console.log(theme)
+  console.log(theme);
   const [searchInput, setSearchInput] = useState("");
 
   const handleSearch = () => {
@@ -69,9 +69,14 @@ console.log(theme)
   return (
     <div className="flex justify-between items-center p-4">
       <Link className="flex justify-center items-center " href="/">
-        <Image src={`${theme == "dark" ?"/logoD.png":"/logo.png"}`} height={32} width={80} alt="logo" />
+        <Image
+          src={`${theme == "dark" ? "/logoD.png" : "/logo.png"}`}
+          height={32}
+          width={80}
+          alt="logo"
+        />
       </Link>
-      
+
       <div className="max-md:hidden ml-56 w-[400px] rounded-full flex">
         <input
           className="flex-grow bg-[#9aabbda1] rounded-l-full border-none outline-none text-sm pl-4 py-3"
@@ -88,15 +93,33 @@ console.log(theme)
         </button>
       </div>
       <div className="flex gap-6 items-center">
-        <div className="max-sm:hidden flex gap-6">
-          {isAdmin && (
-            <Link
-              href="/instructor/courses"
-              key="/instructor/courses"
-              className="text-sm font-medium  hover:text-[#003285]"
+        <motion.div className="max-sm:hidden flex gap-6">
+          {process.env.NODE_ENV === "development" && (
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-              <PersonStanding className="w-5 h-5" />
-            </Link>
+              <Link
+                href="/development"
+                className="text-sm font-medium hover:text-[#003285] dark:hover:text-slate-200 "
+              >
+                Development Link
+              </Link>
+            </motion.div>
+          )}
+          {isAdmin && (
+            <motion.div
+            
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}>
+              <Link
+                href="/instructor/courses"
+                key="/instructor/courses"
+                className="text-sm font-medium dark:hover:text-slate-200  hover:text-[#003285]"
+              >
+                Admin
+              </Link>
+            </motion.div>
           )}
           {links.map(({ href, key, icon, label }, index) => (
             <motion.div
@@ -115,7 +138,7 @@ console.log(theme)
               >
                 <Link
                   href={href}
-                  className="text-sm font-medium hover:text-[#003285]"
+                  className="text-sm font-medium hover:text-[#003285] dark:hover:text-slate-200 "
                 >
                   <div className="flex items-center justify-start">
                     {icon && icon} {/* Render icon if available */}
@@ -125,7 +148,7 @@ console.log(theme)
               </motion.div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         <div className="z-20 sm:hidden">
           <Sheet>
@@ -186,7 +209,7 @@ console.log(theme)
           </Link>
         )}
 
-        <ModeToggle />
+        <ThemeToggle />
       </div>
     </div>
   );

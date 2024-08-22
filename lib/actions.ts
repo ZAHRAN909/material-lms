@@ -30,4 +30,15 @@ export const enrollCourse = async (state:ResourceState ,formData: FormData):Prom
     }
   
 }
+export const fetchEngineers = async () => {
+    try {
+      return await db.engineer.findMany({
+        include: { times: true },
+      });
+    } catch (error) {
+      console.error("Error fetching engineers:", error);
+      throw error;
+    }
+  };
+  
 
