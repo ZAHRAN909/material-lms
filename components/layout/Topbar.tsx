@@ -1,5 +1,5 @@
 "use client";
-
+//@ts-ignore
 import { UserButton, useAuth } from "@clerk/nextjs";
 import { Bot, BotIcon, Menu, PersonStanding, Search } from "lucide-react";
 import HomeIcon from "@mui/icons-material/Home";
@@ -24,17 +24,18 @@ import { ThemeToggle } from "../MoodToggle";
 interface TopbarProps {
   isAdmin: boolean;
 }
+
 const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
   const { isSignedIn } = useAuth();
   const router = useRouter();
   const pathName = usePathname();
+  const { theme } = useTheme();
 
   const topRoutes = [
     { label: "Instructor", path: "/instructor/courses" },
     { label: "Learning", path: "/learning" },
   ];
 
-  const { theme } = useTheme();
   const sidebarRoutes = [
     { label: "Courses", path: "/instructor/courses" },
     {
@@ -42,6 +43,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
       path: "/instructor/performance",
     },
   ];
+
   const links = [
     {
       href: "/chat",
@@ -56,19 +58,24 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
     },
   ];
 
-  console.log(theme);
   const [searchInput, setSearchInput] = useState("");
 
   const handleSearch = () => {
     if (searchInput.trim() !== "") {
       router.push(`/search?query=${searchInput}`);
+    
     }
-    setSearchInput("");
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   return (
     <div className="flex justify-between items-center p-4">
-      <Link className="flex justify-center items-center " href="/">
+      <Link className="flex justify-center items-center" href="/">
         <Image
           src={`${theme == "dark" ? "/logoD.png" : "/logo.png"}`}
           height={32}
@@ -77,12 +84,13 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
         />
       </Link>
 
-      <div className="max-md:hidden ml-56 w-[400px] rounded-full flex">
+      <div className="max-md:hidden flex ml-56 w-[400px] rounded-full">
         <input
           className="flex-grow bg-[#9aabbda1] rounded-l-full border-none outline-none text-sm pl-4 py-3"
           placeholder="Search for courses"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
+          onKeyDown={handleKeyDown} // Add this line
         />
         <button
           className="bg-[#003285] rounded-r-full text-white border-none outline-none cursor-pointer px-4 py-3 hover:bg-[#003285]/80"
@@ -92,6 +100,9 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
           <Search className="h-4 w-4" />
         </button>
       </div>
+      
+      {/* Other components and logic */}
+      
       <div className="flex gap-6 items-center">
         <motion.div className="max-sm:hidden flex gap-6">
           {process.env.NODE_ENV === "development" && (
@@ -101,7 +112,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
             >
               <Link
                 href="/development"
-                className="text-sm font-medium hover:text-[#003285] dark:hover:text-slate-200 "
+                className="text-sm font-medium hover:text-[#003285] dark:hover:text-slate-200"
               >
                 Development Link
               </Link>
@@ -109,13 +120,12 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
           )}
           {isAdmin && (
             <motion.div
-            
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}>
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <Link
                 href="/instructor/courses"
-                key="/instructor/courses"
-                className="text-sm font-medium dark:hover:text-slate-200  hover:text-[#003285]"
+                className="text-sm font-medium dark:hover:text-slate-200 hover:text-[#003285]"
               >
                 Admin
               </Link>
@@ -138,7 +148,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
               >
                 <Link
                   href={href}
-                  className="text-sm font-medium hover:text-[#003285] dark:hover:text-slate-200 "
+                  className="text-sm font-medium hover:text-[#003285] dark:hover:text-slate-200"
                 >
                   <div className="flex items-center justify-start">
                     {icon && icon} {/* Render icon if available */}
@@ -160,24 +170,22 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
                 {isAdmin && (
                   <Link
                     href="/instructor/courses"
-                    key="/instructor/courses"
                     className="text-sm font-medium hover:text-[#003285]"
-                  ></Link>
+                  >
+                    Admin
+                  </Link>
                 )}
-
                 <Link
                   href="/learning"
-                  key="/learning"
                   className="text-sm font-medium hover:text-[#003285]"
                 >
                   My Courses
                 </Link>
                 <Link
                   href="/chat"
-                  key="/chat"
                   className="text-sm font-medium hover:text-[#003285]"
                 >
-                  <div className="flex ">
+                  <div className="flex">
                     <BotIcon className="w-5 h-5" />
                     <span className="ml-2">Ai Assistant</span>
                   </div>
