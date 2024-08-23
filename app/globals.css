@@ -87,3 +87,14 @@
   transform-origin: 0%;
   z-index: 9999;
 }
+.glass-effect {
+  background: rgba(255, 255, 255, 0.2); /* White background with transparency */
+  backdrop-filter: blur(10px); /* Apply a blur effect to the background */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Add a soft shadow */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Optional: Add a light border */
+  padding: 20px; /* Add some padding inside */
+ 
+  margin: auto; /* Optional: Center the element horizontally */
+  position: absolute;
+}
