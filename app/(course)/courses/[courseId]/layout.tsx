@@ -34,6 +34,7 @@ const CourseDetailsLayout = async ({
         },
       },
     },
+    cacheStrategy: { ttl: 60 },
   });
 
   if (!course) {
