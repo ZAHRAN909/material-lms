@@ -19,7 +19,7 @@ const CourseDetailsLayout = async ({
     return redirect("/sign-in");
   }
   const admins = await Admins()
-  const isAdmin = admins.some(admin => admin.id === userId || admin.ID === userId);
+  const isAdmin = admins.some((admin: any) => admin.id === userId || admin.ID === userId);
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
