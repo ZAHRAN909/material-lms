@@ -20,6 +20,8 @@ const getCoursesByCategory = async (categoryId: string | null): Promise<Course[]
     orderBy: {
       createdAt: "desc",
     },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
   })
 
   return courses

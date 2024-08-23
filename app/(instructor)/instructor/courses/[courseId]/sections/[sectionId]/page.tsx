@@ -20,6 +20,8 @@ const SectionDetailsPage = async ({
       id: params.courseId,
       instructorId: userId,
     },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
   });
 
   if (!course) {

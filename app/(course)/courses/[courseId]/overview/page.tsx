@@ -20,6 +20,8 @@ const CourseOverview = async ({ params }: { params: { courseId: string } }) => {
         },
       },
     },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
   });
 
   if (!course) {
@@ -35,7 +37,10 @@ const CourseOverview = async ({ params }: { params: { courseId: string } }) => {
       where: {
         id: course.levelId,
       },
-    });
+    cacheStrategy: { swr: 60, ttl: 60 },
+
+    }
+    );
   }
 
   return (

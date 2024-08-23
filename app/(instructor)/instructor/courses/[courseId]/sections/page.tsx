@@ -23,6 +23,8 @@ const CourseCurriculumPage = async ({ params }: { params: { courseId: string }})
         },
       },
     },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
   });
 
   if (!course) {

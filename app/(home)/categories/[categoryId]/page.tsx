@@ -12,6 +12,8 @@ const CoursesByCategory = async ({
     orderBy: {
       name: "asc",
     },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
   });
 
   const courses = await getCoursesByCategory(params.categoryId);

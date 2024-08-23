@@ -31,6 +31,8 @@ const SectionDetailsPage = async ({
         },
       },
     },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
   });
 
   if (!course) {
@@ -43,6 +45,8 @@ const SectionDetailsPage = async ({
       courseId,
       isPublished: true,
     },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
   });
 
   if (!section) {
@@ -56,6 +60,8 @@ const SectionDetailsPage = async ({
         courseId,
       },
     },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
   });
 
   let muxData = null;
@@ -74,6 +80,8 @@ const SectionDetailsPage = async ({
       where: {
         sectionId,
       },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
     });
   }
 
@@ -83,7 +91,10 @@ const SectionDetailsPage = async ({
         studentId: userId,
         sectionId,
       },
+      
     },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
   });
 
   return (

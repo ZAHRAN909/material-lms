@@ -16,6 +16,8 @@ export default async function Home() {
         },
       },
     },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
   });
 
   const courses = await getCoursesByCategory(null);

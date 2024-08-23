@@ -25,7 +25,10 @@ const SearchPage = async ({ searchParams }: { searchParams: { query: string }}) 
   },
   orderBy: {
     createdAt: 'desc'
-  }
+  },
+  cacheStrategy: { swr: 60, ttl: 60 },
+  
+  
 });
 
 

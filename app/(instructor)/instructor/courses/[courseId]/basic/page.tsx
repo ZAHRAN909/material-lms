@@ -19,6 +19,8 @@ const CourseBasics = async ({ params }: { params: { courseId: string } }) => {
     include: {
       sections: true,
     },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
   });
 
   if (!course) {
@@ -32,9 +34,14 @@ const CourseBasics = async ({ params }: { params: { courseId: string } }) => {
     include: {
       subCategories: true,
     },
+    cacheStrategy: { swr: 60, ttl: 60 },
+
   });
 
-  const levels = await db.level.findMany();
+  const levels = await db.level.findMany({
+    cacheStrategy: { swr: 60, ttl: 60 },
+
+  });
 
   const requiredFields = [
     course.title,
