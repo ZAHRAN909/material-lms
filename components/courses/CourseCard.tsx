@@ -25,7 +25,10 @@ const CourseCard = async ({ course }: { course: Course }) => {
       },
     });
   }
-
+  const lastUpdate = new Date(course.updatedAt);
+  const today = new Date();
+  const timeDiff = Math.abs(today.getTime() - lastUpdate.getTime());
+  const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
   return (
     <>
       <Link href={`/courses/${course.id}/overview`} className=" relative">
@@ -94,6 +97,7 @@ const CourseCard = async ({ course }: { course: Course }) => {
                 </div>
               )}
             </div>
+            
 
             {course.price === 0 ? null : (
               <p className="text-sm font-bold text-red-700 dark:text-red-400">

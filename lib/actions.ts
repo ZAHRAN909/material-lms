@@ -5,7 +5,13 @@ import { db } from "./db"
 import { useUser } from "@clerk/nextjs"
 export const Admins = async()=>{
 
- const admins = await db.admins.findMany()
+ const admins = await db.admins.findMany({
+  take: 100, // limit the number of results
+  skip: 0, // skip the first 'n' results
+  orderBy: {
+    id: 'asc', // order the results by 'id' in ascending order
+  },
+})
  revalidatePath('/(course)/courses/[courseId]', 'page')
  return admins
 

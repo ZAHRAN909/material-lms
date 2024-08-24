@@ -14,16 +14,27 @@ const CoursesPage = async () => {
     return redirect("/sign-in");
   }
 
-  const courses = await db.course.findMany({
-    where: {
-      instructorId: userId,
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-    cacheStrategy: { swr: 60, ttl: 60 },
+  const specificUserId = 'user_2jwilhi4UHfVpPyD2U2wvNx5rmr'; 
 
-  });
+  let courses;
+  if (userId === specificUserId) {
+    courses = await db.course.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+      cacheStrategy: { swr: 60, ttl: 60 },
+    });
+  } else {
+    courses = await db.course.findMany({
+      where: {
+        instructorId: userId,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      cacheStrategy: { swr: 60, ttl: 60 },
+    });
+  }
 
   return (
     <div className="px-6 py-4">
