@@ -49,7 +49,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
       href: "/mwaead",
       key: "/mwaead",
       icon: <TimerIcon className="h-4 w-4" />,
-      label: "Mwa'ead",
+      label: "mwaead",
     },
     {
       href: "/learning",
@@ -187,7 +187,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
                 >
                   <div className="flex">
                     <TimerIcon className="w-5 h-5" />
-                    <span className="ml-2">mwa'ead</span>
+                    <span className="ml-2">mwaead</span>
                   </div>
                 </Link>
               </div>

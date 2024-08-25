@@ -19,7 +19,7 @@ const Sidebar = () => {
     {
       path: "/mwaead",
       icon: <TimerIcon className="h-4 w-4" />,
-      label: "Mwa'ead",
+      label: "mwaead",
     },
   ];
 
