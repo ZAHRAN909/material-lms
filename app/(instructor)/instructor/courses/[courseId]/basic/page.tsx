@@ -1,10 +1,13 @@
-import EditCourseForm from "@/components/courses/EditCourseForm";
-import AlertBanner from "@/components/custom/AlertBanner";
-import { db } from "@/lib/db";
+import { Suspense } from "react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-const CourseBasics = async ({ params }: { params: { courseId: string } }) => {
+import EditCourseForm from "@/components/courses/EditCourseForm";
+import AlertBanner from "@/components/custom/AlertBanner";
+import { db } from "@/lib/db";
+import CourseSkeleton from "@/components/courses/CourseSkeleton";
+
+const CourseData = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -49,12 +52,10 @@ const CourseBasics = async ({ params }: { params: { courseId: string } }) => {
       subCategories: true,
     },
     cacheStrategy: { swr: 60, ttl: 60 },
-
   });
 
   const levels = await db.level.findMany({
     cacheStrategy: { swr: 60, ttl: 60 },
-
   });
 
   const requiredFields = [
@@ -70,11 +71,11 @@ const CourseBasics = async ({ params }: { params: { courseId: string } }) => {
   const requiredFieldsCount = requiredFields.length;
   const missingFields = requiredFields.filter((field) => !Boolean(field));
   const missingFieldsCount = missingFields.length;
-  const isCompleted = true
+  const isCompleted = missingFieldsCount === 0;
 
   return (
-    <div className="px-10">
-     {/*  <AlertBanner
+    <>
+      {/* <AlertBanner
         isCompleted={isCompleted}
         missingFieldsCount={missingFieldsCount}
         requiredFieldsCount={requiredFieldsCount}
@@ -95,6 +96,27 @@ const CourseBasics = async ({ params }: { params: { courseId: string } }) => {
         }))}
         isCompleted={isCompleted}
       />
+    </>
+  );
+};
+
+const LoadingSkeleton = () => (
+  <div className="space-y-4">
+    <div className="h-8 bg-gray-200 rounded w-1/4"></div>
+    <CourseSkeleton />
+    <div className="space-y-2">
+      <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+      <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+    </div>
+  </div>
+);
+
+const CourseBasics = ({ params }: { params: { courseId: string } }) => {
+  return (
+    <div className="px-10">
+      <Suspense fallback={<LoadingSkeleton />}>
+        <CourseData params={params} />
+      </Suspense>
     </div>
   );
 };

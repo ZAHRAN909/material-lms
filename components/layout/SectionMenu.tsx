@@ -26,7 +26,7 @@ const SectionMenu = ({ course }: SectionMenuProps) => {
             <Link
               key={section.id}
               href={`/courses/${course.id}/sections/${section.id}`}
-              className="p-3 rounded-lg hover:bg-[#9aabbda1] mt-4"
+              className="p-3 rounded-lg hover:bg-[#9aabbda1] mt-3"
             >
               {section.title}
             </Link>

@@ -1,26 +1,19 @@
-'use client'
+"use client";
 
-import { useUser } from "@clerk/nextjs"
-import {motion} from 'framer-motion'
+import { TextEffect } from "@/components/TextEffect";
+import { useUser } from "@clerk/nextjs";
 const Header = () => {
-    const { user } = useUser()
-
-    
+  const { user } = useUser();
 
   return (
- <div>
+    <div className="text-xl font-bold p-5">
+      <TextEffect per="char" preset="fade">
+        {`Hello ${user?.firstName}, Your enrolled courses are here`}
 
-     <motion.h1 
-     initial={{ opacity: 0, translateX: -100 }}
-     animate={{ opacity: 1, translateX: 0 }}
-     transition={{ duration: 1,  delay: 0.3 }}
+      </TextEffect>
+     
+    </div>
+  );
+};
 
-     className="text-2xl font-bold p-5">Hello <span className="text-[#022081]">{user?.firstName}</span>, Your enrolled courses are here</motion.h1>
-    
- </div>
-      
-   
-  )
-}
-
-export default Header
+export default Header;

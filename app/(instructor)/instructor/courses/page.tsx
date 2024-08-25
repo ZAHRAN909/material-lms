@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -6,8 +7,9 @@ import { Button } from "@/components/ui/button";
 import { db } from "@/lib/db";
 import { DataTable } from "@/components/custom/DataTable";
 import { columns } from "@/components/courses/Columns";
+import CourseSkeleton from "@/components/courses/CourseSkeleton";
 
-const CoursesPage = async () => {
+const CoursesList = async () => {
   const { userId } = auth();
 
   if (!userId) {
@@ -36,6 +38,18 @@ const CoursesPage = async () => {
     });
   }
 
+  return <DataTable columns={columns} data={courses} />;
+};
+
+const LoadingSkeleton = () => (
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    {[...Array(8)].map((_, index) => (
+      <CourseSkeleton key={index} />
+    ))}
+  </div>
+);
+
+const CoursesPage = async () => {
   return (
     <div className="px-6 py-4">
       <Link href="/instructor/create-course">
@@ -43,7 +57,9 @@ const CoursesPage = async () => {
       </Link>
 
       <div className="mt-5">
-        <DataTable columns={columns} data={courses} />
+        <Suspense fallback={<LoadingSkeleton />}>
+          <CoursesList />
+        </Suspense>
       </div>
     </div>
   );

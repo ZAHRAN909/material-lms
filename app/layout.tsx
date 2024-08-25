@@ -9,6 +9,10 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import ScrollRange from "@/components/ScrollRange";
 import { SiteBlob } from "@/components/SiteBlob";
 import OnlineStatus from "@/components/OnlineStatus";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 
 

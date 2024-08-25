@@ -1,13 +1,12 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import toast from "react-hot-toast";
 
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Loader2 } from "lucide-react";
-import { revalidatePath } from "next/cache";
 
 interface ProgressButtonProps {
   courseId: string;
@@ -22,33 +21,35 @@ const ProgressButton = ({
 }: ProgressButtonProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [completionStatus, setCompletionStatus] = useState(isCompleted);
 
-  const onClick = async () => {
+  const handleProgress = useCallback(async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      axios.post(`/api/courses/${courseId}/sections/${sectionId}/progress`, {
-        isCompleted: !isCompleted,
+      await axios.post(`/api/courses/${courseId}/sections/${sectionId}/progress`, {
+        isCompleted: !completionStatus,
       });
-      toast.success("Progress updated!");
+      setCompletionStatus(!completionStatus);
+      toast.success(completionStatus ? "Progress reset!" : "Progress updated!");
       router.refresh();
-  // Update cache to reflect the new progress state
-  
-      
     } catch (err) {
-      console.log("Failed to update progress", err);
-      toast.error("Something went wrong!");
+      console.error("Failed to update progress", err);
+      toast.error("Failed to update progress. Please try again.");
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [courseId, sectionId, completionStatus, router]);
 
   return (
-    <Button variant={isCompleted ? "complete" : "default"} onClick={()=>{
-      onClick();
-    }}>
+    <Button
+      variant={completionStatus ? "complete" : "default"}
+      onClick={handleProgress}
+      disabled={isLoading}
+      className="transition-all duration-300 ease-in-out"
+    >
       {isLoading ? (
         <Loader2 className="h-4 w-4 animate-spin" />
-      ) : isCompleted ? (
+      ) : completionStatus ? (
         <div className="flex items-center">
           <CheckCircle className="h-4 w-4 mr-2" />
           <span>Completed</span>
