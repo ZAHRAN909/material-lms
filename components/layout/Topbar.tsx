@@ -77,7 +77,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
       setIsLoading(true);
       try {
         // Simulate API call with setTimeout
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 400));
         router.push(`/search?query=${searchInput}`);
       } finally {
         setIsLoading(false);
