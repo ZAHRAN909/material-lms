@@ -68,7 +68,7 @@ const CourseCardSkeleton: React.FC = () => {
 const SearchSkeleton = () => (
   <div className="flex gap-4 flex-wrap">
     {[...Array(6)].map((_, index) => (
-      <CourseCardSkeleton key={index} />
+      <CourseCardSkeleton key={index} /> 
     ))}
   </div>
 );
