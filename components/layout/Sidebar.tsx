@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart4, BotIcon, MonitorPlay } from "lucide-react";
+import { BarChart4, BotIcon, MonitorPlay, TimerIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
@@ -17,9 +17,9 @@ const Sidebar = () => {
     },
 
     {
-      icon: <BotIcon />,
-      label: "Ai Assistant",
-      path: "/chat",
+      path: "/mwaead",
+      icon: <TimerIcon className="h-4 w-4" />,
+      label: "Mwa'ead",
     },
   ];
 

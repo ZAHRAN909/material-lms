@@ -1,7 +1,7 @@
 "use client";
 //@ts-ignore
 import { UserButton, useAuth } from "@clerk/nextjs";
-import { Bot, BotIcon, Menu, PersonStanding, Search } from "lucide-react";
+import { Bot, BotIcon, Menu, PersonStanding, Search, TimerIcon } from "lucide-react";
 import HomeIcon from "@mui/icons-material/Home";
 import Image from "next/image";
 import Link from "next/link";
@@ -46,10 +46,10 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
 
   const links = [
     {
-      href: "/chat",
-      key: "/chat",
-      icon: <BotIcon className="h-4 w-4" />,
-      label: "Ai Assistant",
+      href: "/mwaead",
+      key: "/mwaead",
+      icon: <TimerIcon className="h-4 w-4" />,
+      label: "Mwa'ead",
     },
     {
       href: "/learning",
@@ -182,12 +182,12 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
                   My Courses
                 </Link>
                 <Link
-                  href="/chat"
+                  href="/mwaead"
                   className="text-sm font-medium hover:text-[#003285]"
                 >
                   <div className="flex">
-                    <BotIcon className="w-5 h-5" />
-                    <span className="ml-2">Ai Assistant</span>
+                    <TimerIcon className="w-5 h-5" />
+                    <span className="ml-2">mwa'ead</span>
                   </div>
                 </Link>
               </div>

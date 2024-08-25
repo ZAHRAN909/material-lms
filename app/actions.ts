@@ -10,4 +10,31 @@ const buyCourse = async (formData:FormData)=>{
         }
     })
 }
-export {buyCourse}
+const addEngineer = async (formData:FormData)=>{
+    await db.engineer.create({
+        data:{
+            name: formData.get('name') as string,
+            times: {
+                create: [
+                    {
+                        day: formData.get('day') as string,
+                        time: formData.get('time') as string,
+                        place: formData.get('place') as string,
+                    }
+                ]
+            }
+        }
+    })
+    
+}
+const addTimesToEngineer = async (formData:FormData)=>{
+    await db.timeSlot.create({
+        data:{
+            engineerId: formData.get('engineerId') as string,
+            day: formData.get('day') as string,
+            time: formData.get('time') as string,
+            place: formData.get('place') as string
+        }
+    })
+}
+export {buyCourse , addEngineer , addTimesToEngineer}
