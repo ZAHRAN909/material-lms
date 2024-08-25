@@ -19,7 +19,7 @@ const OnlineStatus = () => {
       toast.error("You are offline. Please check your internet connection. Try refreshing the page.");
       wasOffline.current = true;
     } else if (wasOffline.current) {
-      toast.success("You are back online!");
+      toast.success("You are back online!!");
       wasOffline.current = false;
     }
   }, [isOnline]);
