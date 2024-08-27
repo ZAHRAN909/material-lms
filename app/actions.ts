@@ -54,6 +54,7 @@ const signUp = async (name: string, email: string, password: string) => {
 				name,
 				email,
 				password: hashedPassword,
+				role: 'USER'
 			},
 		});
 
@@ -125,3 +126,4 @@ export async function signOut() {
 	cookies().delete('token');
 	return { success: true };
 }
+

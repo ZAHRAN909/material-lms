@@ -186,12 +186,11 @@ model TimeSlot {
 }
 
 model User {
-  id    String  @id @default(cuid()) @map("_id")
-  name  String?
-  email String  @unique
+  id        String   @id @default(cuid()) @map("_id")
+  name      String?
+  email     String   @unique
   password  String
-  role String
-  image String? // Add this line
+  userRole  UserRole?
   // ... other fields
 
   instructorCourses Course[] @relation("InstructorCourses")
@@ -202,3 +201,15 @@ model User {
   Progress Progress[]
 }
 
+model UserRole {
+  id     String @id @default(cuid()) @map("_id")
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+  role   Role
+}
+enum Role {
+  USER
+  INSTRUCTOR
+  ADMIN
+  MASTER
+}
