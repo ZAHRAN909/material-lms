@@ -16,7 +16,7 @@ datasource db {
 }
 
 model Course {
-  id           String  @id @default(uuid()) @map("_id")
+  id           String   @id @default(cuid()) @map("_id")
   instructorId String
   title        String  
   subtitle     String? 
@@ -39,10 +39,11 @@ model Course {
 
   purchases Purchase[]
 
+  instructor   User     @relation(fields: [instructorId], references: [id])
+  User         User?    @relation("InstructorCourses", fields: [instructorId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-
   @@index([categoryId])
   @@index([subCategoryId])
   @@index([levelId])
@@ -131,6 +132,8 @@ model Progress {
 
   isCompleted Boolean @default(false)
 
+  user   User   @relation(fields: [studentId], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 
@@ -144,6 +147,8 @@ model Purchase {
 
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  user   User   @relation(fields: [customerId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
@@ -180,4 +185,32 @@ model TimeSlot {
   engineerId String    @db.ObjectId
 }
 
+model User {
+  id        String   @id @default(cuid()) @map("_id")
+  name      String?
+  email     String   @unique
+  password  String
+  userRole  UserRole?
+  // ... other fields
 
+  instructorCourses Course[] @relation("InstructorCourses")
+  enrolledCourses   Course[]
+
+  Purchase Purchase[]
+
+  Progress Progress[]
+}
+
+model UserRole {
+  id     String @id @default(cuid()) @map("_id")
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+  role   Role
+}
+
+enum Role {
+  USER
+  INSTRUCTOR
+  ADMIN
+  MASTER
+}

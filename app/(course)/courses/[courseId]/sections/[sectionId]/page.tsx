@@ -1,11 +1,8 @@
 import SectionsDetails from "@/components/sections/SectionsDetails";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { getUserFromToken } from "@/lib/auth";
 import { Resource } from "@prisma/client";
 import { redirect } from "next/navigation";
-
-
-
 
 const SectionDetailsPage = async ({
   params,
@@ -13,9 +10,9 @@ const SectionDetailsPage = async ({
   params: { courseId: string; sectionId: string };
 }) => {
   const { courseId, sectionId } = params;
-  const { userId } = auth();
+  const user = await getUserFromToken();
 
-  if (!userId) {
+  if (!user) {
     return redirect("/sign-in");
   }
 
@@ -31,8 +28,6 @@ const SectionDetailsPage = async ({
         },
       },
     },
-    cacheStrategy: { swr: 60, ttl: 60 },
-
   });
 
   if (!course) {
@@ -45,8 +40,6 @@ const SectionDetailsPage = async ({
       courseId,
       isPublished: true,
     },
-    cacheStrategy: { swr: 60, ttl: 60 },
-
   });
 
   if (!section) {
@@ -56,12 +49,10 @@ const SectionDetailsPage = async ({
   const purchase = await db.purchase.findUnique({
     where: {
       customerId_courseId: {
-        customerId: userId,
+        customerId: user.id,
         courseId,
       },
     },
-    cacheStrategy: { swr: 60, ttl: 60 },
-
   });
 
   let muxData = null;
@@ -80,33 +71,27 @@ const SectionDetailsPage = async ({
       where: {
         sectionId,
       },
-    cacheStrategy: { swr: 60, ttl: 60 },
-
     });
   }
 
   const progress = await db.progress.findUnique({
     where: {
       studentId_sectionId: {
-        studentId: userId,
+        studentId: user.id,
         sectionId,
       },
-      
     },
-    cacheStrategy: { swr: 60, ttl: 60 },
-
   });
 
   return (
     <SectionsDetails
-    path=""
+      path=""
       course={course}
       section={section}
       purchase={purchase}
       muxData={muxData}
       resources={resources}
       progress={progress}
-      userId={userId}
     />
   );
 };

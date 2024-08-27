@@ -25,7 +25,7 @@ export async function GET() {
 async function updateCourseStatistics() {
   const courses = await db.course.findMany({
     where: { isPublished: true },
-    include: { purchases: true, }
+    include: { purchases: true,  }
   });
 
  

@@ -1,7 +1,7 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import Mux from "@mux/mux-node";
+import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
 
 const { video } = new Mux({
   tokenId: process.env.MUX_TOKEN_ID,
@@ -13,16 +13,16 @@ export const PATCH = async (
   { params }: { params: { courseId: string } }
 ) => {
   try {
-    const { userId } = auth();
+    const user = await getUserFromToken();
     const { courseId } = params;
     const values = await req.json();
 
-    if (!userId) {
+    if (!user) {
       return new Response("Unauthorized", { status: 401 });
     }
 
     const course = await db.course.update({
-      where: { id: courseId, instructorId: userId },
+      where: { id: courseId, instructorId: user.id },
       data: { ...values },
     });
 
@@ -38,15 +38,15 @@ export const DELETE = async (
   { params }: { params: { courseId: string } }
 ) => {
   try {
-    const { userId } = auth();
+    const user = await getUserFromToken();
     const { courseId } = params;
 
-    if (!userId) {
+    if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const course = await db.course.findUnique({
-      where: { id: courseId, instructorId: userId},
+      where: { id: courseId, instructorId: user.id },
       include: {
         sections: {
           include: {
@@ -67,7 +67,7 @@ export const DELETE = async (
     }
 
     await db.course.delete({
-      where: { id: courseId, instructorId: userId },
+      where: { id: courseId, instructorId: user.id },
     });
 
     return new NextResponse("Course Deleted", { status: 200 });

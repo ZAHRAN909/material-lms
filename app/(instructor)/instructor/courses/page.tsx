@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -8,33 +7,32 @@ import { db } from "@/lib/db";
 import { DataTable } from "@/components/custom/DataTable";
 import { columns } from "@/components/courses/Columns";
 import CourseSkeleton from "@/components/courses/CourseSkeleton";
+import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
 
 const CoursesList = async () => {
-  const { userId } = auth();
+  const user = await getUserFromToken();
 
-  if (!userId) {
+  if (!user) {
     return redirect("/sign-in");
   }
 
   const specificUserId = 'user_2jwilhi4UHfVpPyD2U2wvNx5rmr'; 
 
   let courses;
-  if (userId === specificUserId) {
+  if (user.id === specificUserId) {
     courses = await db.course.findMany({
       orderBy: {
         createdAt: "desc",
       },
-      cacheStrategy: { swr: 60, ttl: 60 },
     });
   } else {
     courses = await db.course.findMany({
       where: {
-        instructorId: userId,
+        instructorId: user.id,
       },
       orderBy: {
         createdAt: "desc",
       },
-      cacheStrategy: { swr: 60, ttl: 60 },
     });
   }
 
@@ -50,6 +48,12 @@ const LoadingSkeleton = () => (
 );
 
 const CoursesPage = async () => {
+  const user = await getUserFromToken();
+
+  if (!user) {
+    return redirect("/sign-in");
+  }
+
   return (
     <div className="px-6 py-4">
       <Link href="/instructor/create-course">

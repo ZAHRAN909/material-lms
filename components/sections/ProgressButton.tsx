@@ -26,15 +26,21 @@ const ProgressButton = ({
   const handleProgress = useCallback(async () => {
     setIsLoading(true);
     try {
-      await axios.post(`/api/courses/${courseId}/sections/${sectionId}/progress`, {
+      const response = await axios.put(`/api/courses/${courseId}/sections/${sectionId}/progress`, {
         isCompleted: !completionStatus,
       });
+      console.log("Progress update response:", response.data);
       setCompletionStatus(!completionStatus);
       toast.success(completionStatus ? "Progress reset!" : "Progress updated!");
       router.refresh();
     } catch (err) {
       console.error("Failed to update progress", err);
-      toast.error("Failed to update progress. Please try again.");
+      if (axios.isAxiosError(err)) {
+        console.error("Error response:", err.response?.data);
+        toast.error(`Failed to update progress: ${err.response?.data || err.message}`);
+      } else {
+        toast.error("Failed to update progress. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }

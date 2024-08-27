@@ -9,7 +9,7 @@ const CreateCoursePage = async () => {
     include: {
       subCategories: true
     },
-    cacheStrategy: { swr: 60, ttl: 60 },
+    
 
   })
 

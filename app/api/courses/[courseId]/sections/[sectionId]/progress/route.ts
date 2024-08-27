@@ -1,76 +1,39 @@
+import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
-import { NextRequest, NextResponse } from "next/server";
+import { getUserFromToken } from "@/lib/auth";
 
-export const POST = async (
-  req: NextRequest,
+export async function PUT(
+  req: Request,
   { params }: { params: { courseId: string; sectionId: string } }
-) => {
+) {
   try {
-    const { userId } = auth();
-    const { isCompleted } = await req.json();
-
-    if (!userId) {
+    const user = await getUserFromToken();
+    if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { courseId, sectionId } = params;
+    const { isCompleted } = await req.json();
 
-    const course = await db.course.findUnique({
-      where: {
-        id: courseId,
-      },
-    });
-
-    if (!course) {
-      return new NextResponse("Course Not Found", { status: 404 });
-    }
-
-    const section = await db.section.findUnique({
-      where: {
-        id: sectionId,
-        courseId,
-      },
-    });
-
-    if (!section) {
-      return new NextResponse("Section Not Found", { status: 404 });
-    }
-
-    let progress = await db.progress.findUnique({
+    const userProgress = await db.progress.upsert({
       where: {
         studentId_sectionId: {
-          studentId: userId,
-          sectionId,
+          studentId: user.id,
+          sectionId: params.sectionId,
         },
+      },
+      update: {
+        isCompleted,
+      },
+      create: {
+        studentId: user.id,
+        sectionId: params.sectionId,
+        isCompleted,
       },
     });
 
-    if (progress) {
-      progress = await db.progress.update({
-        where: {
-          studentId_sectionId: {
-            studentId: userId,
-            sectionId,
-          },
-        },
-        data: {
-          isCompleted,
-        },
-      });
-    } else {
-      progress = await db.progress.create({
-        data: {
-          studentId: userId,
-          sectionId,
-          isCompleted,
-        },
-      });
-    }
-
-    return NextResponse.json(progress, { status: 200 });
-  } catch (err) {
-    console.log("[sectionId_progress_POST]", err);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return NextResponse.json(userProgress);
+  } catch (error) {
+    console.error("[SECTION_ID_PROGRESS]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
-};
+}

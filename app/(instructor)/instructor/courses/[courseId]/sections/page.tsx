@@ -1,20 +1,20 @@
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import CreateSectionForm from "@/components/sections/CreateSectionForm";
 import { db } from "@/lib/db";
+import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
 
 const CourseCurriculumPage = async ({ params }: { params: { courseId: string }}) => {
-  const { userId } = auth()
+  const user = await getUserFromToken();
 
-  if (!userId) {
-    return redirect("/sign-in")
+  if (!user) {
+    return redirect("/sign-in");
   }
 
-  const specificUserId = 'user_2jwilhi4UHfVpPyD2U2wvNx5rmr'
+  const specificUserId = 'user_2jwilhi4UHfVpPyD2U2wvNx5rmr';
 
   let course;
-  if (userId === specificUserId) {
+  if (user.id === specificUserId) {
     course = await db.course.findUnique({
       where: {
         id: params.courseId,
@@ -26,13 +26,12 @@ const CourseCurriculumPage = async ({ params }: { params: { courseId: string }})
           },
         },
       },
-      cacheStrategy: { swr: 60, ttl: 60 },
     });
   } else {
     course = await db.course.findUnique({
       where: {
         id: params.courseId,
-        instructorId: userId,
+        instructorId: user.id,
       },
       include: {
         sections: {
@@ -41,12 +40,11 @@ const CourseCurriculumPage = async ({ params }: { params: { courseId: string }})
           },
         },
       },
-      cacheStrategy: { swr: 60, ttl: 60 },
     });
   }
 
   if (!course) {
-    return redirect("/instructor/courses")
+    return redirect("/instructor/courses");
   }
 
   return (

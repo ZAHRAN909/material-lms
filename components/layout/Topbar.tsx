@@ -1,6 +1,6 @@
 "use client";
-//@ts-ignore
-import { UserButton, useAuth } from "@clerk/nextjs";
+import { UserButton } from "@/components/UserButton";
+import { useAuth } from '@/lib/AuthContext';
 import {
   Bot,
   BotIcon,
@@ -36,7 +36,7 @@ interface TopbarProps {
 }
 
 const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
-  const { isSignedIn } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
   const pathName = usePathname();
   const { theme } = useTheme();
@@ -69,7 +69,6 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
   ];
 
   const [searchInput, setSearchInput] = useState("");
-
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSearch = async () => {
@@ -198,7 +197,7 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
                   className="text-sm font-medium hover:text-[#003285] dark:hover:text-slate-200"
                 >
                   <div className="flex items-center justify-start">
-                    {icon && icon} {/* Render icon if available */}
+                    {icon && icon}
                     <span className={icon ? "ml-2" : ""}>{label}</span>
                   </div>
                 </Link>
@@ -207,10 +206,8 @@ const Topbar: React.FC<TopbarProps> = ({ isAdmin }) => {
           ))}
         </motion.div>
 
-        
-
-        {isSignedIn ? (
-          <UserButton afterSignOutUrl="/sign-in" />
+        {user ? (
+          <UserButton />
         ) : (
           <Link href="/sign-in">
             <Button>Sign In</Button>

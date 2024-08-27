@@ -1,23 +1,23 @@
 import { Suspense } from "react";
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 import EditCourseForm from "@/components/courses/EditCourseForm";
 import AlertBanner from "@/components/custom/AlertBanner";
 import { db } from "@/lib/db";
 import CourseSkeleton from "@/components/courses/CourseSkeleton";
+import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
 
 const CourseData = async ({ params }: { params: { courseId: string } }) => {
-  const { userId } = auth();
+  const user = await getUserFromToken();
 
-  if (!userId) {
+  if (!user) {
     return redirect("/sign-in");
   }
 
   const specificUserId = 'user_2jwilhi4UHfVpPyD2U2wvNx5rmr'; 
 
   let course;
-  if (userId === specificUserId) {
+  if (user.id === specificUserId) {
     course = await db.course.findUnique({
       where: {
         id: params.courseId,
@@ -25,18 +25,16 @@ const CourseData = async ({ params }: { params: { courseId: string } }) => {
       include: {
         sections: true,
       },
-      cacheStrategy: { swr: 60, ttl: 60 },
     });
   } else {
     course = await db.course.findUnique({
       where: {
         id: params.courseId,
-        instructorId: userId,
+        instructorId: user.id,
       },
       include: {
         sections: true,
       },
-      cacheStrategy: { swr: 60, ttl: 60 },
     });
   }
 
@@ -51,11 +49,10 @@ const CourseData = async ({ params }: { params: { courseId: string } }) => {
     include: {
       subCategories: true,
     },
-    cacheStrategy: { swr: 60, ttl: 60 },
   });
 
   const levels = await db.level.findMany({
-    cacheStrategy: { swr: 60, ttl: 60 },
+    
   });
 
   const requiredFields = [

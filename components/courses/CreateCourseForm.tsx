@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,6 +19,7 @@ import { ComboBox } from "@/components/custom/ComboBox";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Loader2 } from "lucide-react";
+import { createCourse } from "@/lib/actions"; // Import the server action
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -59,11 +59,15 @@ const CreateCourseForm = ({ categories }: CreateCourseFormProps) => {
   // 2. Define a submit handler.
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post("/api/courses", values);
-      router.push(`/instructor/courses/${response.data.id}/basic`);
-      toast.success("New Course Created");
+      const result = await createCourse(values);
+      if (result.success) {
+        router.push(`/instructor/courses/${result.courseId}/basic`);
+        toast.success("New Course Created");
+      } else {
+        toast.error(result.error || "Failed to create course");
+      }
     } catch (err) {
-      console.log("Failed to create new course", err);
+      console.error("Failed to create new course", err);
       toast.error("Something went wrong!");
     }
   };

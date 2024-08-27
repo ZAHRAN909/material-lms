@@ -18,7 +18,7 @@ export const POST = async (
 
     const course = await db.course.findUnique({
       where: { id: params.courseId, isPublished: true },
-    cacheStrategy: { swr: 60, ttl: 60 },
+    
 
     });
 
@@ -30,7 +30,7 @@ export const POST = async (
       where: {
         customerId_courseId: { customerId: user.id, courseId: course.id },
       },
-    cacheStrategy: { swr: 60, ttl: 60 },
+    
 
     });
 

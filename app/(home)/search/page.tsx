@@ -4,6 +4,7 @@ import { Suspense } from "react";
 
 const SearchResults = async ({ queryText }: { queryText: string }) => {
   const courses = await db.course.findMany({
+    
     where: {
       isPublished: true,
       OR: [
@@ -13,6 +14,7 @@ const SearchResults = async ({ queryText }: { queryText: string }) => {
       ]
     },
     include: {
+      
       category: true,
       subCategory: true,
       level: true,
@@ -25,7 +27,7 @@ const SearchResults = async ({ queryText }: { queryText: string }) => {
     orderBy: {
       createdAt: 'desc'
     },
-    cacheStrategy: { swr: 60, ttl: 60 },
+    
   });
 
   return (

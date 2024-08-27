@@ -1,21 +1,21 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
 
 export const POST = async (
   req: NextRequest,
   { params }: { params: { courseId: string } }
 ) => {
   try {
-    const { userId } = auth();
+    const user = await getUserFromToken();
     const { courseId } = params;
 
-    if (!userId) {
+    if (!user) {
       return new Response("Unauthorized", { status: 401 });
     }
 
     const course = await db.course.findUnique({
-      where: { id: courseId, instructorId: userId },
+      where: { id: courseId, instructorId: user.id },
       include: {
         sections: {
           include: {
@@ -46,12 +46,12 @@ export const POST = async (
       return new NextResponse("Missing required fields", { status: 400 });
     }
 
-    const pusblishedCourse = await db.course.update({
-      where: { id: courseId, instructorId: userId },
+    const publishedCourse = await db.course.update({
+      where: { id: courseId, instructorId: user.id },
       data: { isPublished: true },
     });
 
-    return NextResponse.json(pusblishedCourse, { status: 200 });
+    return NextResponse.json(publishedCourse, { status: 200 });
   } catch (err) {
     console.log("[courseId_publish_POST]", err);
     return new Response("Internal Server Error", { status: 500 });

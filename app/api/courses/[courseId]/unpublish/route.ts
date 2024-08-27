@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { getUserFromToken } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (
@@ -7,29 +7,29 @@ export const POST = async (
   { params }: { params: { courseId: string } }
 ) => {
   try {
-    const { userId } = auth();
+    const user = await getUserFromToken();
     const { courseId } = params;
 
-    if (!userId) {
-      return new Response("Unauthorized", { status: 401 });
+    if (!user) {
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const course = await db.course.findUnique({
-      where: { id: courseId, instructorId: userId },
+      where: { id: courseId, instructorId: user.id },
     });
 
     if (!course) {
-      return new Response("Course not found", { status: 404 });
+      return new NextResponse("Course not found", { status: 404 });
     }
 
-    const unpusblishedCourse = await db.course.update({
-      where: { id: courseId, instructorId: userId },
+    const unpublishedCourse = await db.course.update({
+      where: { id: courseId, instructorId: user.id },
       data: { isPublished: false },
     });
 
-    return NextResponse.json(unpusblishedCourse, { status: 200 });
+    return NextResponse.json(unpublishedCourse, { status: 200 });
   } catch (err) {
     console.log("[courseId_unpublish_POST]", err);
-    return new Response("Internal Server Error", { status: 500 });
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 };

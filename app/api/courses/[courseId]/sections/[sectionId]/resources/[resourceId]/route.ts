@@ -1,15 +1,15 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
 
-export const POST = async (
+export const DELETE = async (
   req: NextRequest,
-  { params }: { params: { courseId: string; sectionId: string, resourceId: string } }
+  { params }: { params: { courseId: string; sectionId: string; resourceId: string } }
 ) => {
   try {
-    const { userId } = auth()
+    const user = await getUserFromToken();
 
-    if (!userId) {
+    if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -18,7 +18,7 @@ export const POST = async (
     const course = await db.course.findUnique({
       where: {
         id: courseId,
-        instructorId: userId,
+        instructorId: user.id,
       },
     });
 
@@ -46,7 +46,7 @@ export const POST = async (
     
     return NextResponse.json("Resource deleted", { status: 200 });
   } catch (err) {
-    console.log("[resourceId_DELETE", err);
+    console.log("[resourceId_DELETE]", err);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 };

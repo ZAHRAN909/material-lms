@@ -3,7 +3,7 @@ import CourseSideBar from "@/components/layout/CourseSideBar";
 import Topbar from "@/components/layout/Topbar";
 import { Admins } from "@/lib/actions";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { getUserFromToken } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 const CourseDetailsLayout = async ({
@@ -13,13 +13,15 @@ const CourseDetailsLayout = async ({
   children: React.ReactNode;
   params: { courseId: string };
 }) => {
-  const { userId } = auth();
+  const user = await getUserFromToken();
 
-  if (!userId) {
+  if (!user) {
     return redirect("/sign-in");
   }
-  const admins = await Admins()
-  const isAdmin = admins.some((admin: any) => admin.id === userId || admin.ID === userId);
+
+  const admins = await Admins();
+  const isAdmin = admins.some((admin: any) => admin.id === user.id);
+
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
@@ -34,7 +36,6 @@ const CourseDetailsLayout = async ({
         },
       },
     },
-    cacheStrategy: { swr: 60, ttl: 60 },
   });
 
   if (!course) {
@@ -46,7 +47,7 @@ const CourseDetailsLayout = async ({
       <Topbar isAdmin={isAdmin} />
       <ScrollRange />
       <div className="flex-1 flex">
-        <CourseSideBar course={course} studentId={userId} />
+        <CourseSideBar course={course} studentId={user.id} />
         <div className="flex-1">{children}</div>
       </div>
     </div>

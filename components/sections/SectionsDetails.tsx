@@ -26,6 +26,8 @@ import { Button } from "../ui/button";
 
 import { Suspense } from "react";
 import ReadText from "../custom/ReadText";
+import { useAuth } from "@/lib/AuthContext";
+import { enrollCourse } from "@/lib/actions";
 
 const LoadingSkeleton = () => (
   <div className="px-6 py-4 flex flex-col gap-5 animate-pulse">
@@ -53,7 +55,6 @@ const SectionsDetails = ({
   muxData,
   resources,
   progress,
-  userId,
   path,
 }: {
   course: Course & { sections: Section[] };
@@ -62,36 +63,45 @@ const SectionsDetails = ({
   muxData: MuxData | null;
   resources: Resource[];
   progress: Progress | null;
-  userId: string;
   path: string;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [runConfetti, setRunConfetti] = useState(false);
   const { width, height } = useWindowSize();
   const router = useRouter();
+  const { user } = useAuth();
 
-  const isPurchased = purchase?.customerId === userId;
+  const isPurchased = purchase?.customerId === user?.id;
   const isLocked = !purchase && !section.isFree;
 
   const handleEnrollment = useCallback(async () => {
+    if (!user) {
+      toast.error("You must be logged in to enroll in a course");
+      router.push("/sign-in");
+      return;
+    }
+
     setIsLoading(true);
     try {
       const formData = new FormData();
-      formData.append('userId', userId);
       formData.append('courseId', course.id);
 
-      await buyCourse(formData);
-      toast.success("Course Enrolled!");
-      setRunConfetti(true);
-      router.refresh();
-      setTimeout(() => setRunConfetti(false), 3000);
+      const result = await enrollCourse(formData);
+      if (result.success) {
+        toast.success(result.message || 'Enrollment successful');
+        setRunConfetti(true);
+        router.refresh();
+        setTimeout(() => setRunConfetti(false), 3000);
+      } else {
+        toast.error(result.error || "An error occurred during enrollment");
+      }
     } catch (error) {
       console.error("Enrollment error:", error);
-      toast.error("Enrollment failed. Please try again.");
+      toast.error("An unexpected error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
-  }, [userId, course.id, router]);
+  }, [user, course.id, router]);
 
   useEffect(() => {
     const handleClick = () => setRunConfetti(false);
@@ -139,15 +149,6 @@ const SectionsDetails = ({
           </div>
 
           <ReadText value={section.description || ""} />
-
-          {isLocked && (
-            <div className="px-10 flex flex-col gap-5 items-center bg-[#9aabbda1]">
-              <Lock className="h-8 w-8" />
-              <p className="text-sm font-bold">
-                Video for this section is locked! Please buy the course to access.
-              </p>
-            </div>
-          )}
 
           <MotionDiv
             initial={{ opacity: 0, y: 100 }}

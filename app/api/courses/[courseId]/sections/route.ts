@@ -1,20 +1,20 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
+import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
 
 export const POST = async (
   req: NextRequest,
   { params }: { params: { courseId: string } }
 ) => {
   try {
-    const { userId } = auth();
+    const user = await getUserFromToken();
 
-    if (!userId) {
+    if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
     const course = await db.course.findUnique({
-      where: { id: params.courseId, instructorId: userId },
+      where: { id: params.courseId, instructorId: user.id },
     });
 
     if (!course) {

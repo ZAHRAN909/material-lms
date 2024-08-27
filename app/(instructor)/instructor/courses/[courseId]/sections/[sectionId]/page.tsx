@@ -1,28 +1,27 @@
 import AlertBanner from "@/components/custom/AlertBanner";
 import EditSectionForm from "@/components/sections/EditSectionForm";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
 
 const SectionData = async ({
   params,
 }: {
   params: { courseId: string; sectionId: string };
 }) => {
-  const { userId } = auth();
+  const user = await getUserFromToken();
 
-  if (!userId) {
+  if (!user) {
     return redirect("/sign-in");
   }
 
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
-      instructorId: userId,
+      instructorId: user.id,
     },
-    cacheStrategy: { swr: 60, ttl: 60 },
   });
 
   if (!course) {

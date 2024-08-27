@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { getUserFromToken } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export const PUT = async (
@@ -7,9 +7,9 @@ export const PUT = async (
   { params }: { params: { courseId: string } }
 ) => {
   try {
-    const { userId } = auth();
+    const user = await getUserFromToken();
 
-    if (!userId) {
+    if (!user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
@@ -18,7 +18,7 @@ export const PUT = async (
     const course = await db.course.findUnique({
       where: {
         id: params.courseId,
-        instructorId: userId,
+        instructorId: user.id,
       },
     });
 
