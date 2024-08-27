@@ -190,7 +190,7 @@ model User {
   name      String?
   email     String   @unique
   password  String
-  userRole  UserRole?
+  role Role @default(USER)
   // ... other fields
 
   instructorCourses Course[] @relation("InstructorCourses")
@@ -201,15 +201,10 @@ model User {
   Progress Progress[]
 }
 
-model UserRole {
-  id     String @id @default(cuid()) @map("_id")
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
-  role   Role
-}
 enum Role {
   USER
   INSTRUCTOR
   ADMIN
   MASTER
 }
+

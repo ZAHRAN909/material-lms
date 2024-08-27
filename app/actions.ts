@@ -54,11 +54,19 @@ const signUp = async (name: string, email: string, password: string) => {
 				name,
 				email,
 				password: hashedPassword,
-				role: 'USER'
-			},
+				role: 'USER'  // Set the default role to 'USER'
+			}
 		});
 
-		return { success: true, user: { id: user.id, name: user.name, email: user.email } };
+		return { 
+			success: true, 
+			user: { 
+				id: user.id, 
+				name: user.name, 
+				email: user.email,
+				role: user.role
+			} 
+		};
 	} catch (error) {
 		console.error('Sign up error:', error);
 		return { success: false, error: 'An error occurred during sign up' };
@@ -112,10 +120,17 @@ export async function getUserFromToken() {
 
 		const user = await db.user.findUnique({
 			where: { id: userId },
-			select: { id: true, name: true, email: true }
+			select: { id: true, name: true, email: true, role: true }
 		});
 
-		return user;
+		if (!user) return null;
+
+		return {
+			id: user.id,
+			name: user.name,
+			email: user.email,
+			role: user.role
+		};
 	} catch (error) {
 		console.error('Failed to verify token:', error);
 		return null;
@@ -126,4 +141,3 @@ export async function signOut() {
 	cookies().delete('token');
 	return { success: true };
 }
-
