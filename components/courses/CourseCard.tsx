@@ -55,9 +55,8 @@ const CourseCard = async ({ course }: { course: Course }) => {
                 <div className="flex gap-2 items-center">
                   <Image
                     src={
-                      instructor.image
-                        ? instructor.image
-                        : "/avatar_placeholder.jpg"
+                      
+                         "/avatar_placeholder.jpg"
                     }
                     alt={
                       instructor.name
