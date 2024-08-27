@@ -43,7 +43,6 @@ const CourseOverview = async ({ params }: { params: { courseId: string } }) => {
         select: {
           id: true,
           name: true,
-          image: true,
         },
       },
     },
