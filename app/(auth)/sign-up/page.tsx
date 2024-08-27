@@ -43,6 +43,7 @@ export default function SignUpPage() {
         setError(result.error || 'An error occurred during sign up');
       }
     } catch (err) {
+      console.error('Sign up error:', err);
       setError('An error occurred. Please try again.');
     } finally {
       setIsLoading(false);
