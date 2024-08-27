@@ -190,7 +190,7 @@ model User {
   name  String?
   email String  @unique
   password  String
-  userRole  UserRole?
+  role String
   image String? // Add this line
   // ... other fields
 
@@ -202,16 +202,3 @@ model User {
   Progress Progress[]
 }
 
-model UserRole {
-  id     String @id @default(cuid()) @map("_id")
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id])
-  role   Role
-}
-
-enum Role {
-  USER
-  INSTRUCTOR
-  ADMIN
-  MASTER
-}

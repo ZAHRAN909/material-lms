@@ -4,8 +4,8 @@ import { getUserFromToken } from "@/lib/auth";
 import bcrypt from "bcryptjs";
 
 async function getUserRole(userId: string) {
-  const userRole = await db.userRole.findUnique({
-    where: { userId },
+  const userRole = await db.user.findUnique({
+    where: { id: userId },
     select: { role: true },
   });
   return userRole?.role || 'USER';  // Default to USER if no role is set
@@ -25,16 +25,14 @@ export async function GET(req: NextRequest) {
   }
 
   const users = await db.user.findMany({
-    include: {
-      userRole: true,
-    },
+   
   });
 
   const formattedUsers = users.map(user => ({
     id: user.id,
     name: user.name,
     email: user.email,
-    role: user.userRole?.role || 'USER',
+    role: user.role || 'USER',
   }));
 
   return NextResponse.json(formattedUsers);
@@ -62,14 +60,7 @@ export async function POST(req: NextRequest) {
       name,
       email,
       password: hashedPassword,
-      userRole: {
-        create: {
-          role,
-        },
-      },
-    },
-    include: {
-      userRole: true,
+      role,
     },
   });
 
@@ -77,7 +68,7 @@ export async function POST(req: NextRequest) {
     id: newUser.id,
     name: newUser.name,
     email: newUser.email,
-    role: newUser.userRole?.role || 'USER',
+    role: newUser.role || 'USER',
   });
 }
 
@@ -99,15 +90,7 @@ export async function PUT(req: NextRequest) {
   const updatedUser = await db.user.update({
     where: { id },
     data: {
-      userRole: {
-        upsert: {
-          create: { role },
-          update: { role },
-        },
-      },
-    },
-    include: {
-      userRole: true,
+      role: role,
     },
   });
 
@@ -115,6 +98,6 @@ export async function PUT(req: NextRequest) {
     id: updatedUser.id,
     name: updatedUser.name,
     email: updatedUser.email,
-    role: updatedUser.userRole?.role || 'USER',
+    role: updatedUser.role || 'USER',
   });
 }

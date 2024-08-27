@@ -68,7 +68,6 @@ export async function getUserFromToken() {
 
     const user = await db.user.findUnique({
       where: { id: userId },
-      include: { userRole: true },
     });
 
     if (!user) return null;
@@ -77,7 +76,7 @@ export async function getUserFromToken() {
       id: user.id,
       name: user.name,
       email: user.email,
-      role: user.userRole?.role || 'USER',
+      role: user.role || 'USER',
     };
   } catch (error) {
     console.error('Error verifying token:', error);
