@@ -86,7 +86,7 @@ const CourseOverview = async ({ params }: { params: { courseId: string } }) => {
 
         <div className="flex gap-2 items-center">
           <Image
-            src={course.instructor.image || "/avatar_placeholder.jpg"}
+            src="/avatar_placeholder.jpg"
             alt={`${course.instructor.name}'s photo`}
             width={30}
             height={30}
