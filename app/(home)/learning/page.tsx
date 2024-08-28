@@ -5,10 +5,9 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import Header from "./Header";
 import { MotionDiv } from "@/components/MotionDiv";
-import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-
+import { getUserFromToken } from "@/app/actions";
 const PurchasedCourses = async () => {
 	const user = await getUserFromToken();
 

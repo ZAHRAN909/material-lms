@@ -1,7 +1,6 @@
 import { db } from "@/lib/db";
-import { getUserFromToken } from "@/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
-
+import { getUserFromToken } from "@/app/actions";
 export const PUT = async (
   req: NextRequest,
   { params }: { params: { courseId: string } }

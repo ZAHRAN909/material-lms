@@ -7,8 +7,7 @@ import { db } from "@/lib/db";
 import { DataTable } from "@/components/custom/DataTable";
 import { columns } from "@/components/courses/Columns";
 import CourseSkeleton from "@/components/courses/CourseSkeleton";
-import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
-
+import { getUserFromToken } from "@/app/actions";
 const CoursesList = async () => {
   const user = await getUserFromToken();
 

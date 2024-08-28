@@ -1,6 +1,6 @@
+import { getUserFromToken } from "@/app/actions";
 import SectionsDetails from "@/components/sections/SectionsDetails";
 import { db } from "@/lib/db";
-import { getUserFromToken } from "@/lib/auth";
 import { Resource } from "@prisma/client";
 import { redirect } from "next/navigation";
 

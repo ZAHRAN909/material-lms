@@ -3,12 +3,12 @@ import { redirect } from "next/navigation";
 import Topbar from "@/components/layout/Topbar";
 import Sidebar from "@/components/layout/Sidebar";
 import { Admins } from "@/lib/actions";
-import { getUserFromToken } from "@/lib/auth";
+import { getUserFromToken } from "../actions";
 
 const InstructorLayout = async ({ children }: { children: React.ReactNode }) => {
   const user = await getUserFromToken();
-  const admins = await Admins();
-  const isAdmin = user ? admins.some(admin => admin.id === user.id) : false;
+  console.log(user);
+const isAdmin = user?.role === "ADMIN";
   
   if (!user) {
     return redirect("/sign-in");

@@ -59,29 +59,32 @@ export async function signIn(email: string, password: string): Promise<AuthResul
 
 export async function getUserFromToken() {
   const token = cookies().get('token')?.value;
-  if (!token) return null;
+	
+	if (!token) return null;
+	try {
+		const { payload } = await jwtVerify(
+			token,
+			new TextEncoder().encode(process.env.JWT_SECRET!)
+		);
+		const userId = payload.userId as string;
 
-  try {
-    const { payload } = await jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET));
-    const userId = payload.sub;
-    if (!userId) return null;
+		const user = await db.user.findUnique({
+			where: { id: userId },
+			select: { id: true, name: true, email: true, role: true }
+		});
 
-    const user = await db.user.findUnique({
-      where: { id: userId },
-    });
+		if (!user) return null;
 
-    if (!user) return null;
-
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role || 'USER',
-    };
-  } catch (error) {
-    console.error('Error verifying token:', error);
-    return null;
-  }
+		return {
+			id: user.id,
+			name: user.name,
+			email: user.email,
+			role: user.role
+		};
+	} catch (error) {
+		console.error('Failed to verify token:', error);
+		return null;
+	}
 }
 
 export async function updateUser(userId: string, data: Partial<User>): Promise<AuthResult> {

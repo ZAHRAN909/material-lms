@@ -1,8 +1,7 @@
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import Mux from "@mux/mux-node";
-import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
-
+import { getUserFromToken } from "@/app/actions";
 const { video } = new Mux({
   tokenId: process.env.MUX_TOKEN_ID,
   tokenSecret: process.env.MUX_TOKEN_SECRET,

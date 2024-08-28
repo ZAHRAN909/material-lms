@@ -4,8 +4,7 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
-
+import { getUserFromToken } from "@/app/actions";
 const SectionData = async ({
   params,
 }: {

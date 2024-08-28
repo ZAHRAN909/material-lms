@@ -1,6 +1,6 @@
+import { getUserFromToken } from "@/app/actions";
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
 
 export const POST = async (req: NextRequest) => {
   try {

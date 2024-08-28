@@ -2,8 +2,7 @@ import { redirect } from "next/navigation";
 
 import CreateSectionForm from "@/components/sections/CreateSectionForm";
 import { db } from "@/lib/db";
-import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
-
+import { getUserFromToken } from "@/app/actions";
 const CourseCurriculumPage = async ({ params }: { params: { courseId: string }}) => {
   const user = await getUserFromToken();
 

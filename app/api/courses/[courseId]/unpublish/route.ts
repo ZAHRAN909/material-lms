@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { getUserFromToken } from "@/lib/auth";
+import { getUserFromToken } from "@/app/actions";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (

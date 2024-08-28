@@ -5,8 +5,7 @@ import EditCourseForm from "@/components/courses/EditCourseForm";
 import AlertBanner from "@/components/custom/AlertBanner";
 import { db } from "@/lib/db";
 import CourseSkeleton from "@/components/courses/CourseSkeleton";
-import { getUserFromToken } from "@/lib/auth"; // Import your custom auth function
-
+import { getUserFromToken } from "@/app/actions";
 const CourseData = async ({ params }: { params: { courseId: string } }) => {
   const user = await getUserFromToken();
 

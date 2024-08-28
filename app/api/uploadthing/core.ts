@@ -1,4 +1,4 @@
-import { getUserFromToken } from "@/lib/auth";
+import { getUserFromToken } from "@/app/actions";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 

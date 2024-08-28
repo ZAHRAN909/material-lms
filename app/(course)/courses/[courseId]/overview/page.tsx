@@ -3,10 +3,10 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
-import { getUserFromToken } from "@/lib/auth";
 import ReadText from "@/components/custom/ReadText";
 import SectionMenu from "@/components/layout/SectionMenu";
 import { MotionDiv, MotionP } from "@/components/MotionDiv";
+import { getUserFromToken } from "@/app/actions";
 
 const LoadingSkeleton = () => (
   <div className="px-6 py-4 flex flex-col gap-5 animate-pulse">

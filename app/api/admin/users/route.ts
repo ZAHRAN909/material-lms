@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getUserFromToken } from "@/lib/auth";
 import bcrypt from "bcryptjs";
+import { getUserFromToken } from "@/app/actions";
 
 async function getUserRole(userId: string) {
   const userRole = await db.user.findUnique({

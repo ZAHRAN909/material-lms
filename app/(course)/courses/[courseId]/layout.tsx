@@ -1,9 +1,11 @@
+import { getUserFromToken } from "@/app/actions";
 import ScrollRange from "@/components/ScrollRange";
 import CourseSideBar from "@/components/layout/CourseSideBar";
 import Topbar from "@/components/layout/Topbar";
 import { Admins } from "@/lib/actions";
 import { db } from "@/lib/db";
-import { getUserFromToken } from "@/lib/auth";
+
+
 import { redirect } from "next/navigation";
 
 const CourseDetailsLayout = async ({
